@@ -12,7 +12,7 @@ export const registerWithOTP = createAsyncThunk(
     "auth/registerWithOTP",
     async (userData, { rejectWithValue }) => {
         try {
-            const res = await axios.post(`${BASE_URL}/auth/register`, userData);
+            const res = await axios.post(`${BASE_URL}/auth/register`, userData, authHeader(null));
             return { ...res.data, email: userData.email };
         } catch (error) {
             return rejectWithValue(error.response.data.message || "Failed to send OTP");
@@ -24,8 +24,7 @@ export const vertifyRegisterOTP = createAsyncThunk(
     "auth/vertifyRegisterOTP",
     async (data, { rejectWithValue }) => {
         try {
-            const res = await axios.post(`${BASE_URL}/auth/verify`, data);
-            localStorage.setItem("token", res.data.token);
+            const res = await axios.post(`${BASE_URL}/auth/register/verify`, {OTP: data.OTP},{withCredentials: true});
             return res.data;
         } catch (error) {
             return rejectWithValue(error.response.data.message || "Failed to verify OTP");
@@ -37,7 +36,7 @@ export const loginWithEmailOTP = createAsyncThunk(
     "auth/loginWithEmailOTP",
     async (data, { rejectWithValue }) => {
         try {
-            const res = await axios.post(`${BASE_URL}/auth/loginwithemail`, data);
+            const res = await axios.post(`${BASE_URL}/auth/loginwithemail`, data, authHeader(null));
             return { ...res.data, email: data.email };
         } catch (error) {
             return rejectWithValue(error.response.data.message || "Failed to send OTP");
@@ -107,7 +106,7 @@ export const resetPassword = createAsyncThunk(
         }
     });
 
-export const resentOTP = createAsyncThunk(
+export const resendOTP = createAsyncThunk(
     "auth/resendOTP",
     async (data, { rejectWithValue }) => {
         try {
@@ -131,7 +130,7 @@ export const getMe = createAsyncThunk(
         }
     });
 
-export const logout = createAsyncThunk(
+export const logoutUser = createAsyncThunk(
     "auth/logout",
     async (_, { rejectWithValue }) => {
         try {

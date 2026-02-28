@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { get } from "node_modules/axios/index.cjs";
+import { forgotPassword, getMe, loginWithEmailOTP, loginWithPassword, logoutUser, registerWithOTP, resetPassword, resendOTP, verifyForgotPasswordOTP, verifyLoginOTP, vertifyRegisterOTP } from "../thunks/authThunks";
+
 
 const initialState = {
     user: null,

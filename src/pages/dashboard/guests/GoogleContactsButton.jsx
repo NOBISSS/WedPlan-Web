@@ -1,7 +1,7 @@
 ;
 
 import { Button } from "@/components/ui/button";
-import { BACKEND_URL } from "@/constants/constant";
+import { BASE_URL } from "@/constants/constant";
 import { useGoogleLogin } from "@react-oauth/google";
 import axios from "axios";
 
