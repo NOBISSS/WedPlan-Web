@@ -20,6 +20,7 @@ import { categories } from "@/constants/constant";
 
 export const VenueDetail = () => {
   const [bookVenueModalOpen, setBookVenueModalOpen] = useState(false);
+  const [venueAvailibilityModalOpen, setVenueAvailibilityModalOpen] = useState(false);
   const { venue, details, operations } = venueData;
   // const categories = useSelector((state) => state.eventCategory?.categories || ["Wedding", "Reception", "Engagement", "Sangeet"]);
 
@@ -44,6 +45,10 @@ export const VenueDetail = () => {
       {
           bookVenueModalOpen &&
         <BookModal  eventCategory={categories} setBookVenueModalOpen={setBookVenueModalOpen} />
+      }
+      {
+          venueAvailibilityModalOpen &&
+        <BookModal  eventCategory={categories} setBookVenueModalOpen={setVenueAvailibilityModalOpen} />
       }
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Left Column - Main Content */}
@@ -73,7 +78,7 @@ export const VenueDetail = () => {
           {/* Right Column - Sidebar */}
           <div className="space-y-6">
             {/* Pricing Card */}
-            <PricingCard operations={operations} details={details}  setBookVenueModalOpen={setBookVenueModalOpen}/>
+            <PricingCard operations={operations} details={details}  setBookVenueModalOpen={setBookVenueModalOpen} setVenueAvailibilityModalOpen={setVenueAvailibilityModalOpen} />
 
             {/* Operating Hours */}
             <TimingsCard operations={operations} />

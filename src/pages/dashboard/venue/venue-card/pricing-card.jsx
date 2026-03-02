@@ -5,11 +5,15 @@ import { IndianRupee, Calendar, Heart, Share2, MapPin } from "lucide-react";
 import { VenueDetail } from "../VenueDetail";
 
 
-export function PricingCard({ operations, details,setBookVenueModalOpen }) {
+export function PricingCard({ operations, details,setBookVenueModalOpen, setVenueAvailibilityModalOpen }) {
   const formattedPrice = new Intl.NumberFormat("en-IN").format(operations.price);
   const handleBook=(e)=>{
     e.preventDefault();
     setBookVenueModalOpen(true);
+  }
+  const handleCheckAvailability=(e)=>{
+    e.preventDefault();
+    setVenueAvailibilityModalOpen(true);
   }
   return (
     <Card className="border-primary/20 shadow-lg">
@@ -36,7 +40,7 @@ export function PricingCard({ operations, details,setBookVenueModalOpen }) {
             <Calendar className="h-4 w-4 mr-2" />
             Book Venue
           </Button>
-          <Button className="w-full bg-primary hover:bg-primary/90 text-primary-foreground" size="lg">
+          <Button className="w-full bg-primary hover:bg-primary/90 text-primary-foreground" size="lg" onClick={(e)=>handleCheckAvailability(e)}>
             <Calendar className="h-4 w-4 mr-2" />
             Check Availability
           </Button>
