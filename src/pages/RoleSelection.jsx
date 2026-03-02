@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Users, MapPin, Briefcase, ArrowRight, Check, Gem } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { useNavigate } from "react-router-dom"
 
 const roles = [
   {
@@ -37,7 +38,7 @@ const roles = [
 
 export default function RoleSelectionPage() {
   // const { selectRole, user } = useAuth()
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   const [selected, setSelected] = useState(null)
 
   // React.useEffect(() => {
@@ -46,12 +47,12 @@ export default function RoleSelectionPage() {
   //   }
   // }, [user?.role, navigate])
 
-  // const handleContinue = () => {
-  //   if (selected) {
-  //     selectRole(selected)
-  //     navigate("/profile-setup")
-  //   }
-  // }
+  const handleContinue = () => {
+    if (selected) {
+      // selectRole(selected)
+      navigate("/set-venue-profile")
+    }
+  }
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
@@ -121,7 +122,7 @@ export default function RoleSelectionPage() {
               size="lg"
               className="bg-accent text-accent-foreground hover:bg-accent/90 min-w-48"
               disabled={!selected}
-              // onClick={handleContinue}
+              onClick={handleContinue}
             >
               Continue
               <ArrowRight className="ml-2 h-4 w-4" />
