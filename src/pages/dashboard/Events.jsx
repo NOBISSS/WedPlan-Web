@@ -1,117 +1,170 @@
-
-
-import { useState } from "react"
-
-import { Heart, ArrowRight, Check } from "lucide-react"
+import { useEffect, useState } from "react"
+import { Heart, ArrowRight, Check, Loader2, Sparkles } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { DashboardLayout } from "@/components/DashboardLayout"
 import { Link } from "react-router-dom"
+import { useDispatch, useSelector } from "react-redux"
+import { fetchEvents } from "@/store/thunks/eventThunk"
+
+const EVENT_ICONS = {
+  wedding: "💍",
+  reception: "🥂",
+  engagement: "💌",
+  mehndi: "🌿",
+  sangeet: "🎶",
+}
 
 const eventTypes = [
-  {
-    id: "wedding",
-    title: "Wedding Ceremony",
-    description: "Traditional wedding ceremony with all rituals",
-    selected: true,
-  },
-  {
-    id: "reception",
-    title: "Wedding Reception",
-    description: "Grand reception party for all guests",
-    selected: false,
-  },
-  {
-    id: "engagement",
-    title: "Engagement Party",
-    description: "Intimate engagement celebration",
-    selected: false,
-  },
-  {
-    id: "mehndi",
-    title: "Mehndi Ceremony",
-    description: "Traditional henna ceremony",
-    selected: false,
-  },
-  {
-    id: "sangeet",
-    title: "Sangeet Night",
-    description: "Musical evening with dance performances",
-    selected: false,
-  },
+  { id: "wedding",    title: "Wedding Ceremony",  description: "Traditional wedding ceremony with all rituals" },
+  { id: "reception",  title: "Wedding Reception",  description: "Grand reception party for all guests" },
+  { id: "engagement", title: "Engagement Party",   description: "Intimate engagement celebration" },
+  { id: "mehndi",     title: "Mehndi Ceremony",    description: "Traditional henna ceremony" },
+  { id: "sangeet",    title: "Sangeet Night",       description: "Musical evening with dance performances" },
 ]
 
 export default function EventsPage() {
   const [selectedEvents, setSelectedEvents] = useState(["wedding"])
+  const dispatch = useDispatch()
+  const { events, loading } = useSelector((state) => state.event)
 
   const toggleEvent = (eventId) => {
-    setSelectedEvents((prev) => (prev.includes(eventId) ? prev.filter((id) => id !== eventId) : [...prev, eventId]))
+    setSelectedEvents((prev) =>
+      prev.includes(eventId) ? prev.filter((id) => id !== eventId) : [...prev, eventId]
+    )
   }
 
+  useEffect(() => {
+    dispatch(fetchEvents())
+  }, [dispatch])
+
   return (
-      <div className="space-y-6">
-        <div>
-          <h1 className="text-2xl md:text-3xl font-bold text-foreground">Select Events</h1>
-          <p className="text-muted-foreground mt-1">Choose the events you want to plan for your wedding</p>
-        </div>
+    <div className="space-y-6">
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {eventTypes.map((event) => {
-            const isSelected = selectedEvents.includes(event.id)
-            return (
-              <Card
-                key={event.id}
-                className={`cursor-pointer transition-all ${
-                  isSelected ? "ring-2 ring-primary border-primary" : "hover:shadow-md"
-                }`}
-                onClick={() => toggleEvent(event.id)}
-              >
-                <CardContent className="p-5">
-                  <div className="flex items-start justify-between">
-                    <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center">
-                      <Heart className="h-6 w-6 text-primary" />
-                    </div>
-                    <div
-                      className={`w-6 h-6 rounded-full border-2 flex items-center justify-center ${
-                        isSelected ? "bg-primary border-primary" : "border-muted-foreground"
-                      }`}
-                    >
-                      {isSelected && <Check className="h-4 w-4 text-primary-foreground" />}
-                    </div>
-                  </div>
-                  <h3 className="font-semibold text-foreground mt-4 mb-1">{event.title}</h3>
-                  <p className="text-sm text-muted-foreground">{event.description}</p>
-                </CardContent>
-              </Card>
-            )
-          })}
-        </div>
+      {/* ── Page Header ── */}
+      <div>
+        <h1 className="text-2xl md:text-3xl font-bold text-foreground">Select Events</h1>
+        <p className="text-muted-foreground mt-1">Choose the events you want to plan for your wedding</p>
+      </div>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Selected Events Summary</CardTitle>
-            <CardDescription>You have selected {selectedEvents.length} event(s)</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="flex flex-wrap gap-2 mb-6">
-              {selectedEvents.map((eventId) => {
-                const event = eventTypes.find((e) => e.id === eventId)
-                return (
-                  <span key={eventId} className="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm font-medium">
-                    {event?.title}
+      {loading ? (
+        <div className="flex items-center justify-center h-64">
+          <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
+        </div>
+      ) : (
+        <div className="space-y-6">
+
+          {/* ── API Events Strip (from backend) ── */}
+          {events && events.length > 0 && (
+            <Card className="border-blue-100 bg-blue-50/50">
+              <CardContent className="p-4">
+                <div className="flex items-center gap-2 mb-3">
+                  <Heart className="h-4 w-4 text-blue-600" />
+                  <span className="text-sm font-medium text-foreground">Your Wedding Events</span>
+                  <span className="px-2 py-0.5 bg-blue-100 text-blue-700 rounded-full text-xs font-medium">
+                    {events.length} available
                   </span>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {events.map((event) => (
+                    <div key={event.id} className="flex items-center gap-1.5 px-3 py-1.5 bg-white border border-blue-100 rounded-lg">
+                      <span className="text-sm">{EVENT_ICONS[event.id] ?? "🎉"}</span>
+                      <span className="text-sm font-medium text-foreground">{event?.title || "Wedding Celebration"}</span>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          )}
+
+          {/* ── Selectable Event Cards ── */}
+          <div>
+            <div className="flex items-center gap-2 mb-4">
+              <Sparkles className="h-4 w-4 text-blue-600" />
+              <h2 className="text-lg font-semibold text-foreground">Plan Your Events</h2>
+              <span className="px-2 py-0.5 bg-primary/10 text-primary rounded-full text-xs font-medium">
+                {selectedEvents.length} selected
+              </span>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {eventTypes.map((event) => {
+                const isSelected = selectedEvents.includes(event.id)
+                return (
+                  <Card
+                    key={event.id}
+                    className={`cursor-pointer transition-all select-none ${
+                      isSelected
+                        ? "ring-2 ring-blue-500 border-blue-500 bg-blue-50/40"
+                        : "hover:shadow-md hover:border-blue-200"
+                    }`}
+                    onClick={() => toggleEvent(event.id)}
+                    role="checkbox"
+                    aria-checked={isSelected}
+                    tabIndex={0}
+                    onKeyDown={(e) => e.key === "Enter" && toggleEvent(event.id)}
+                  >
+                    <CardContent className="p-5">
+                      <div className="flex items-start justify-between mb-4">
+                        <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center text-2xl">
+                          {EVENT_ICONS[event.id]}
+                        </div>
+                        <div
+                          className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all ${
+                            isSelected
+                              ? "bg-blue-500 border-blue-500"
+                              : "border-muted-foreground"
+                          }`}
+                        >
+                          {isSelected && <Check className="h-3.5 w-3.5 text-white" strokeWidth={3} />}
+                        </div>
+                      </div>
+                      <h3 className="font-semibold text-foreground mb-1">{event.title}</h3>
+                      <p className="text-sm text-muted-foreground">{event.description}</p>
+                    </CardContent>
+                  </Card>
                 )
               })}
             </div>
-            <Button asChild>
-              <Link to="/dashboard/venue">
-                Continue to Venue Selection
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </Link>
-            </Button>
-          </CardContent>
-        </Card>
-      </div>
-    
+          </div>
+
+          {/* ── Summary ── */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Selected Events Summary</CardTitle>
+              <CardDescription>You have selected {selectedEvents.length} event(s)</CardDescription>
+            </CardHeader>
+            <CardContent>
+              {selectedEvents.length > 0 ? (
+                <div className="flex flex-wrap gap-2 mb-6">
+                  {selectedEvents.map((eventId) => {
+                    const event = eventTypes.find((e) => e.id === eventId)
+                    return (
+                      <span
+                        key={eventId}
+                        className="flex items-center gap-1.5 px-3 py-1 bg-primary/10 text-primary rounded-full text-sm font-medium"
+                      >
+                        {EVENT_ICONS[eventId]} {event?.title}
+                      </span>
+                    )
+                  })}
+                </div>
+              ) : (
+                <p className="text-sm text-muted-foreground italic mb-6">
+                  No events selected yet — pick at least one above.
+                </p>
+              )}
+
+              <Button asChild disabled={selectedEvents.length === 0}>
+                <Link to="/dashboard/venue">
+                  Continue to Venue Selection
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Link>
+              </Button>
+            </CardContent>
+          </Card>
+
+        </div>
+      )}
+    </div>
   )
 }

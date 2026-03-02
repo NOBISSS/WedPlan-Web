@@ -28,7 +28,7 @@ function GuestsContent() {
   const dispatch=useDispatch();
   const guestsData=useSelector((state) => state.guest.guests || {});
 
-  console.log("GUEST DATA FETCHED::",guestsData);
+  //console.log("GUEST DATA FETCHED::",guestsData);
   const [guests, setGuests] = useState(initialGuests)
   const [searchTerm, setSearchTerm] = useState("")
   const [newGuest, setNewGuest] = useState({ name: "", phone: "", category: "Family" })
