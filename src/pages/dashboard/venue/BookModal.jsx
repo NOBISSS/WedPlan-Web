@@ -29,9 +29,9 @@ const StepIndicator = ({ currentStep, totalSteps }) => {
     )
 }
 
-const StepOne = ({setBookVenueModalOpen, eventCategory, setStep, savedData,onStepComplete,stepIndicator}) => {
+const StepOne = ({ setBookVenueModalOpen, eventCategory, setStep, savedData, onStepComplete, stepIndicator }) => {
     const { register, handleSubmit, formState: { errors } } = useForm({
-        defaultValues:savedData
+        defaultValues: savedData
     });
 
     const onSubmit = (data) => {
@@ -77,20 +77,20 @@ const StepOne = ({setBookVenueModalOpen, eventCategory, setStep, savedData,onSte
                     {/* Row 2: Event Type */}
                     <div className='flex  w-full gap-2'>
                         <div className='w-1/2 '>
-                        <label htmlFor='type' className='mb-1 font-medium'>Event Type</label>
-                        <select
-                            className='py-2 px-3 border border-gray-300 rounded-md w-full focus:outline-none focus:border-blue-700'
-                            {...register("type", { required: "Event type is required" })}
+                            <label htmlFor='type' className='mb-1 font-medium'>Event Type</label>
+                            <select
+                                className='py-2 px-3 border border-gray-300 rounded-md w-full focus:outline-none focus:border-blue-700'
+                                {...register("type", { required: "Event type is required" })}
                             //onChange={(e) => handleChange(e, setStep)}
-                        >
-                            <option value="">Select an event category</option>
-                            {eventCategory.length > 0 && eventCategory.map((category) => (
-                                <option key={category.id} value={category.id}>
-                                    {category}
-                                </option>
-                            ))}
-                        </select>
-                        {errors.type && <p className="text-red-500 text-sm mt-1">{errors.type.message}</p>}
+                            >
+                                <option value="">Select an event category</option>
+                                {eventCategory.length > 0 && eventCategory.map((category) => (
+                                    <option key={category.id} value={category.id}>
+                                        {category}
+                                    </option>
+                                ))}
+                            </select>
+                            {errors.type && <p className="text-red-500 text-sm mt-1">{errors.type.message}</p>}
                         </div>
                         <div className='flex flex-col flex-1'>
                             <label htmlFor='totalBudget' className='mb-1 font-medium'>Budget</label>
@@ -153,15 +153,15 @@ const StepOne = ({setBookVenueModalOpen, eventCategory, setStep, savedData,onSte
     )
 }
 
-const StepTwo = ({ setBookVenueModalOpen, setStep,savedData,onStepComplete,stepIndicator }) => {
-    const {register,handleSubmit,formState:{errors}} = useForm({
-        defaultValues:savedData
+const StepTwo = ({ setBookVenueModalOpen, setStep, savedData, onStepComplete, stepIndicator }) => {
+    const { register, handleSubmit, formState: { errors } } = useForm({
+        defaultValues: savedData
     });
 
     const onSubmit = (data) => {
         onStepComplete(data);
         setStep(3);
-    }   
+    }
 
     return (
         <div className='flex flex-col h-full'>
@@ -279,7 +279,7 @@ const StepTwo = ({ setBookVenueModalOpen, setStep,savedData,onStepComplete,stepI
     )
 }
 
-const StepThree = ({ setBookVenueModalOpen, setStep, allData, onFinalSubmit,stepIndicator }) => {
+const StepThree = ({ setBookVenueModalOpen, setStep, allData, onFinalSubmit, stepIndicator }) => {
     return (
         <div>
             <h1 className='text-2xl font-bold text-primary mb-6'>Review & Confirm</h1>
@@ -315,7 +315,7 @@ const StepThree = ({ setBookVenueModalOpen, setStep, allData, onFinalSubmit,step
 const BookModal = ({ eventCategory, setBookVenueModalOpen }) => {
     const dispatch = useDispatch();
     const [step, setStep] = useState(1);
-    const TOTAL_STEPS=3;
+    const TOTAL_STEPS = 3;
     const { register, handleSubmit, formState: { errors } } = useForm();
     const [formData, setFormData] = useState({
         name: "",
@@ -326,10 +326,8 @@ const BookModal = ({ eventCategory, setBookVenueModalOpen }) => {
         totalBudget: ""
     })
 
-    
-
     const handleStepComplete = (stepData) => {
-        setFormData(prev=>({...prev, ...stepData}))
+        setFormData(prev => ({ ...prev, ...stepData }))
     }
 
     const handleFinalSubmit = () => {
@@ -341,30 +339,30 @@ const BookModal = ({ eventCategory, setBookVenueModalOpen }) => {
     const renderStep = () => {
         switch (step) {
             case 1:
-                return <StepOne 
-                            setBookVenueModalOpen={setBookVenueModalOpen}
-                            eventCategory={eventCategory}
-                            setStep={setStep}
-                            savedData={formData}
-                            onStepComplete={handleStepComplete} 
-                            stepIndicator={<StepIndicator currentStep={step} totalSteps={TOTAL_STEPS} />}
-                        />
+                return <StepOne
+                    setBookVenueModalOpen={setBookVenueModalOpen}
+                    eventCategory={eventCategory}
+                    setStep={setStep}
+                    savedData={formData}
+                    onStepComplete={handleStepComplete}
+                    stepIndicator={<StepIndicator currentStep={step} totalSteps={TOTAL_STEPS} />}
+                />
             case 2:
                 return <StepTwo
-                            setBookVenueModalOpen={setBookVenueModalOpen}
-                            setStep={setStep}
-                            savedData={formData}
-                            onStepComplete={handleStepComplete} 
-                            stepIndicator={<StepIndicator currentStep={step} totalSteps={TOTAL_STEPS} />}
-                        />
+                    setBookVenueModalOpen={setBookVenueModalOpen}
+                    setStep={setStep}
+                    savedData={formData}
+                    onStepComplete={handleStepComplete}
+                    stepIndicator={<StepIndicator currentStep={step} totalSteps={TOTAL_STEPS} />}
+                />
             case 3:
                 return <StepThree
-                            setBookVenueModalOpen={setBookVenueModalOpen}
-                            setStep={setStep}
-                            allData={formData}
-                            onFinalSubmit={handleFinalSubmit}
-                            stepIndicator={<StepIndicator currentStep={step} totalSteps={TOTAL_STEPS} />}
-                         />
+                    setBookVenueModalOpen={setBookVenueModalOpen}
+                    setStep={setStep}
+                    allData={formData}
+                    onFinalSubmit={handleFinalSubmit}
+                    stepIndicator={<StepIndicator currentStep={step} totalSteps={TOTAL_STEPS} />}
+                />
             default:
                 return null;
         }

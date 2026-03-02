@@ -65,145 +65,145 @@ import { fetchVenues } from "@/store/thunks/venueThunks"
 // ]
 
 export default function VenuePage() {
-  const dispatch=useDispatch();
+  const dispatch = useDispatch();
   const [selectedVenue, setSelectedVenue] = useState(null)
   const [numberOfDays, setNumberOfDays] = useState(1)
   const [isFilterOpen, setIsFilterOpen] = useState(false);
-  const {venues,loading}=useSelector((state)=>state.venue || []);
-  const selectedVenueData = useSelector((state)=>state.venue.currentSelectedVenue || null);
-  
+  const { venues, loading } = useSelector((state) => state.venue || []);
+  const selectedVenueData = useSelector((state) => state.venue.currentSelectedVenue || null);
+
   const totalCost = selectedVenueData ? selectedVenueData.price * numberOfDays : 0
   const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(fetchVenues());
-  },[])
+  }, [])
 
   return (
-    
-      <div className="space-y-6">
-        <div className="flex justify-between">
-          <div className="">
-            <h1 className="text-2xl md:text-3xl font-bold text-foreground">Select Venue</h1>
-            <p className="text-muted-foreground mt-1">Choose the perfect venue for your special day</p>
-          </div>
-          <div className="mr-2 mt-2">
-            <button
-              type="button"
-              onClick={() => setIsFilterOpen(true)}
-              className="rounded-lg bg-blue-600 px-6 py-3 text-sm font-medium text-white hover:bg-blue-700 transition-colors"
-            >
-              Open All Filters
-            </button>
-            <VenueFilter
-              isOpen={isFilterOpen}
-              onClose={() => setIsFilterOpen(false)}
-              onApply={(filter) => console.log("Applied Filters", filter)}
-            />
-          </div>
+
+    <div className="space-y-6">
+      <div className="flex justify-between">
+        <div className="">
+          <h1 className="text-2xl md:text-3xl font-bold text-foreground">Select Venue</h1>
+          <p className="text-muted-foreground mt-1">Choose the perfect venue for your special day</p>
         </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-
-          { loading ? <div className="text-center flex items-center justify-center col-span-full h-64"><Loader2 className="h-8 w-8 animate-spin text-blue-600" /></div> : venues.map((venue) => {
-            const isSelected = selectedVenue === venue.venueId
-            return (
-              <Card
-                key={venue.venueId}
-                className={`overflow-hidden cursor-pointer transition-all ${isSelected ? "ring-2 ring-primary border-primary" : "hover:shadow-lg"
-                  }`}
-                onClick={() => {
-                  navigate(`/venue/${venue.venueId}`)
-                  navigate(`/dashboard/venue/${venue.venueId}`)
-                  dispatch(addCurrentSelectedVenue(venue))
-                  setSelectedVenue(venue.venueId)
-                }}
-              >
-                <div className="relative aspect-video">
-                  <img
-                    src={venue.coverImage || "/placeholder.svg"}
-                    alt={venue.name}
-                    className="w-full h-full object-cover"
-                  />
-                  {isSelected && (
-                    <div className="absolute top-3 right-3 w-8 h-8 bg-primary rounded-full flex items-center justify-center">
-                      <Check className="h-5 w-5 text-primary-foreground" />
-                    </div>
-                  )}
-                </div>
-                <CardContent className="p-4">
-                  <h3 className="font-semibold text-foreground text-lg mb-2">{venue.name}</h3>
-                  <div className="space-y-2 text-sm text-muted-foreground">
-                    <div className="flex items-center gap-2">
-                      <MapPin className="h-4 w-4" />
-                      <span>{venue.location}</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Users className="h-4 w-4" />
-                      <span>Capacity: {venue.capacity} guests</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <IndianRupee className="h-4 w-4" />
-                      <span className="font-semibold text-foreground">{venue.price.toLocaleString()} / day</span>
-                    </div>
-                  </div>
-                  <Button className="w-full mt-4" variant={isSelected ? "default" : "outline"}>
-                    {isSelected ? "Selected" : "Select Venue"}
-                  </Button>
-                </CardContent>
-              </Card>
-            )
-          })}
+        <div className="mr-2 mt-2">
+          <button
+            type="button"
+            onClick={() => setIsFilterOpen(true)}
+            className="rounded-lg bg-blue-600 px-6 py-3 text-sm font-medium text-white hover:bg-blue-700 transition-colors"
+          >
+            Open All Filters
+          </button>
+          <VenueFilter
+            isOpen={isFilterOpen}
+            onClose={() => setIsFilterOpen(false)}
+            onApply={(filter) => console.log("Applied Filters", filter)}
+          />
         </div>
-
-        {selectedVenue && (
-          <Card className="border-primary/20 shadow-lg mt-6 bg-amber-300">
-            <CardHeader>
-              <CardTitle>Booking Details</CardTitle>
-              <CardDescription>Configure your venue booking</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="grid gap-6 md:grid-cols-2">
-                <div>
-                  <Label className="text-foreground">Selected Venue</Label>
-                  <p className="text-lg font-semibold text-primary mt-1">{selectedVenueData?.name}</p>
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="days">Number of Days</Label>
-                  <div className="flex items-center gap-3">
-                    <Calendar className="h-5 w-5 text-muted-foreground" />
-                    <Input
-                      id="days"
-                      type="number"
-                      min={1}
-                      max={7}
-                      value={numberOfDays}
-                      onChange={(e) => setNumberOfDays(Math.max(1, Number.parseInt(e.target.value) || 1))}
-                      className="w-24"
-                    />
-                    <span className="text-muted-foreground">day(s)</span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="mt-6 p-4 bg-muted rounded-lg">
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-muted-foreground">
-                    Price per day: ₹{selectedVenueData?.price.toLocaleString()}
-                  </span>
-                </div>
-                <div className="flex items-center justify-between text-lg font-semibold">
-                  <span className="text-foreground">Total Cost:</span>
-                  <span className="text-primary">₹{totalCost.toLocaleString()}</span>
-                </div>
-              </div>
-
-              <Button className="mt-6" size="lg">
-                Confirm Venue Booking
-              </Button>
-            </CardContent>
-          </Card>
-        )}
       </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+        {loading ? <div className="text-center flex items-center justify-center col-span-full h-64"><Loader2 className="h-8 w-8 animate-spin text-blue-600" /></div> : venues.map((venue) => {
+          const isSelected = selectedVenue === venue.venueId
+          return (
+            <Card
+              key={venue.venueId}
+              className={`overflow-hidden cursor-pointer transition-all ${isSelected ? "ring-2 ring-primary border-primary" : "hover:shadow-lg"
+                }`}
+              onClick={() => {
+                navigate(`/venue/${venue.venueId}`)
+                navigate(`/dashboard/venue/${venue.venueId}`)
+                dispatch(addCurrentSelectedVenue(venue))
+                setSelectedVenue(venue.venueId)
+              }}
+            >
+              <div className="relative aspect-video">
+                <img
+                  src={venue.coverImage || "/placeholder.svg"}
+                  alt={venue.name}
+                  className="w-full h-full object-cover"
+                />
+                {isSelected && (
+                  <div className="absolute top-3 right-3 w-8 h-8 bg-primary rounded-full flex items-center justify-center">
+                    <Check className="h-5 w-5 text-primary-foreground" />
+                  </div>
+                )}
+              </div>
+              <CardContent className="p-4">
+                <h3 className="font-semibold text-foreground text-lg mb-2">{venue.name}</h3>
+                <div className="space-y-2 text-sm text-muted-foreground">
+                  <div className="flex items-center gap-2">
+                    <MapPin className="h-4 w-4" />
+                    <span>{venue.location}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Users className="h-4 w-4" />
+                    <span>Capacity: {venue.capacity} guests</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <IndianRupee className="h-4 w-4" />
+                    <span className="font-semibold text-foreground">{venue.price.toLocaleString()} / day</span>
+                  </div>
+                </div>
+                <Button className="w-full mt-4" variant={isSelected ? "default" : "outline"}>
+                  {isSelected ? "Selected" : "Select Venue"}
+                </Button>
+              </CardContent>
+            </Card>
+          )
+        })}
+      </div>
+
+      {selectedVenue && (
+        <Card className="border-primary/20 shadow-lg mt-6 bg-amber-300">
+          <CardHeader>
+            <CardTitle>Booking Details</CardTitle>
+            <CardDescription>Configure your venue booking</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="grid gap-6 md:grid-cols-2">
+              <div>
+                <Label className="text-foreground">Selected Venue</Label>
+                <p className="text-lg font-semibold text-primary mt-1">{selectedVenueData?.name}</p>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="days">Number of Days</Label>
+                <div className="flex items-center gap-3">
+                  <Calendar className="h-5 w-5 text-muted-foreground" />
+                  <Input
+                    id="days"
+                    type="number"
+                    min={1}
+                    max={7}
+                    value={numberOfDays}
+                    onChange={(e) => setNumberOfDays(Math.max(1, Number.parseInt(e.target.value) || 1))}
+                    className="w-24"
+                  />
+                  <span className="text-muted-foreground">day(s)</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-6 p-4 bg-muted rounded-lg">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-muted-foreground">
+                  Price per day: ₹{selectedVenueData?.price.toLocaleString()}
+                </span>
+              </div>
+              <div className="flex items-center justify-between text-lg font-semibold">
+                <span className="text-foreground">Total Cost:</span>
+                <span className="text-primary">₹{totalCost.toLocaleString()}</span>
+              </div>
+            </div>
+
+            <Button className="mt-6" size="lg">
+              Confirm Venue Booking
+            </Button>
+          </CardContent>
+        </Card>
+      )}
+    </div>
   )
 }

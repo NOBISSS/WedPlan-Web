@@ -20,7 +20,7 @@ export const vertifyRegisterOTP = createAsyncThunk(
     "auth/vertifyRegisterOTP",
     async (data, { rejectWithValue }) => {
         try {
-            const res = await axios.post(`${BASE_URL}/auth/register/verify`, {OTP: data.OTP},{withCredentials: true});
+            const res = await axios.post(`${BASE_URL}/auth/register/verify`, { OTP: data.OTP }, { withCredentials: true });
             return res.data;
         } catch (error) {
             return rejectWithValue(error.response.data.message || "Failed to verify OTP");
@@ -32,7 +32,7 @@ export const loginWithEmailOTP = createAsyncThunk(
     "auth/loginWithEmailOTP",
     async (data, { rejectWithValue }) => {
         try {
-            const res = await axios.post(`${BASE_URL}/auth/loginwithemail`, {contactNoOREmail:data}, headers(null));
+            const res = await axios.post(`${BASE_URL}/auth/loginwithemail`, { contactNoOREmail: data }, headers(null));
             return { ...res.data, email: data.contactNoOREmail };
         } catch (error) {
             return rejectWithValue(error.response.data.message || "Failed to send OTP");
@@ -44,7 +44,7 @@ export const verifyLoginOTP = createAsyncThunk(
     "auth/verifyLoginOTP",
     async (data, { rejectWithValue }) => {
         try {
-            const res = await axios.post(`${BASE_URL}/auth/loginwithemail/verify`, {OTP:data}, {withCredentials: true});
+            const res = await axios.post(`${BASE_URL}/auth/loginwithemail/verify`, { OTP: data }, { withCredentials: true });
             localStorage.setItem("token", res.data.token);
             return res.data;
         } catch (error) {

@@ -223,11 +223,10 @@ export function VenueFilter({ isOpen, onClose, onApply }) {
             <button
               type="button"
               onClick={() => toggleQuickFilter("quickApply")}
-              className={`flex w-full items-center gap-3 rounded-lg border px-4 py-3 text-left transition-colors ${
-                filters.quickFilters.quickApply
+              className={`flex w-full items-center gap-3 rounded-lg border px-4 py-3 text-left transition-colors ${filters.quickFilters.quickApply
                   ? "border-blue-500 bg-blue-50 text-blue-700"
                   : "border-gray-200 bg-white text-gray-700 hover:bg-gray-50"
-              }`}
+                }`}
             >
               <MousePointer2 className="h-5 w-5" />
               <span className="text-sm font-medium">Quick Apply</span>
@@ -235,11 +234,10 @@ export function VenueFilter({ isOpen, onClose, onApply }) {
             <button
               type="button"
               onClick={() => toggleQuickFilter("openToAll")}
-              className={`flex w-full items-center gap-3 rounded-lg border px-4 py-3 text-left transition-colors ${
-                filters.quickFilters.openToAll
+              className={`flex w-full items-center gap-3 rounded-lg border px-4 py-3 text-left transition-colors ${filters.quickFilters.openToAll
                   ? "border-blue-500 bg-blue-50 text-blue-700"
                   : "border-gray-200 bg-white text-gray-700 hover:bg-gray-50"
-              }`}
+                }`}
             >
               <DoorOpen className="h-5 w-5" />
               <span className="text-sm font-medium">Open to all</span>
@@ -437,11 +435,10 @@ export function VenueFilter({ isOpen, onClose, onApply }) {
                       key={day}
                       type="button"
                       onClick={() => handleDateSelect(day)}
-                      className={`rounded py-1 text-sm transition-colors ${
-                        isSelected
+                      className={`rounded py-1 text-sm transition-colors ${isSelected
                           ? "bg-blue-600 text-white"
                           : "text-gray-700 hover:bg-gray-100"
-                      }`}
+                        }`}
                     >
                       {day}
                     </button>
@@ -612,11 +609,10 @@ export function VenueFilter({ isOpen, onClose, onApply }) {
                   key={tab.key}
                   type="button"
                   onClick={() => setActiveTab(tab.key)}
-                  className={`relative flex w-full items-center px-4 py-3 text-left text-sm transition-colors ${
-                    activeTab === tab.key
+                  className={`relative flex w-full items-center px-4 py-3 text-left text-sm transition-colors ${activeTab === tab.key
                       ? "bg-white font-medium text-blue-600"
                       : "text-gray-600 hover:bg-gray-100"
-                  }`}
+                    }`}
                 >
                   {activeTab === tab.key && (
                     <span className="absolute left-0 top-0 h-full w-1 bg-blue-600" />

@@ -1,6 +1,6 @@
 
 
-import React from "react"
+import React, { useEffect } from "react"
 import { Suspense, useState } from "react"
 import { Plus, Users, Trash2, Search } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -11,6 +11,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { DashboardLayout } from "@/components/DashboardLayout"
 import { GoogleOAuthProvider } from "@react-oauth/google"
 import GoogleContactButton from "./GoogleContactsButton"
+import { useDispatch, useSelector } from "react-redux"
+import { fetchGuests } from "@/store/thunks/guestThunk"
 
 
 
@@ -23,6 +25,10 @@ const initialGuests = [
 ]
 
 function GuestsContent() {
+  const dispatch=useDispatch();
+  const guestsData=useSelector((state) => state.guest.guests || {});
+
+  console.log("GUEST DATA FETCHED::",guestsData);
   const [guests, setGuests] = useState(initialGuests)
   const [searchTerm, setSearchTerm] = useState("")
   const [newGuest, setNewGuest] = useState({ name: "", phone: "", category: "Family" })
@@ -49,6 +55,11 @@ function GuestsContent() {
   }
 
   const getCategoryCount = (category) => guests.filter((g) => g.category === category).length
+
+
+  useEffect(()=>{
+    dispatch(fetchGuests());
+  },[])
 
   return (
     
