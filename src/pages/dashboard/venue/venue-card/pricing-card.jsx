@@ -5,12 +5,23 @@ import { IndianRupee, Calendar, Heart, Share2, MapPin } from "lucide-react";
 import { VenueDetail } from "../VenueDetail";
 
 
-export function PricingCard({ operations, details,setBookVenueModalOpen }) {
-  const formattedPrice = new Intl.NumberFormat("en-IN").format(operations?.price);
-  const handleBook=(e)=>{
+export function PricingCard({
+  operations,
+  details,
+  setBookVenueModalOpen,
+  setVenueAvailibilityModalOpen,
+}) {
+  const formattedPrice = new Intl.NumberFormat("en-IN").format(
+    operations?.price,
+  );
+  const handleBook = (e) => {
     e.preventDefault();
     setBookVenueModalOpen(true);
-  }
+  };
+  const handleCheckAvailability = (e) => {
+    e.preventDefault();
+    setVenueAvailibilityModalOpen(true);
+  };
   return (
     <Card className="border-primary/20 shadow-lg">
       <CardHeader className="pb-3 bg-gradient-to-r from-primary/5 to-primary/10 rounded-t-lg">
@@ -19,24 +30,36 @@ export function PricingCard({ operations, details,setBookVenueModalOpen }) {
             <IndianRupee className="h-5 w-5 text-primary" />
             Pricing
           </CardTitle>
-          <Badge className="bg-primary text-primary-foreground">Per Event</Badge>
+          <Badge className="bg-primary text-primary-foreground">
+            Per Event
+          </Badge>
         </div>
       </CardHeader>
       <CardContent className="space-y-4 pt-4">
         <div className="text-center py-4 bg-secondary/30 rounded-lg">
           <div className="flex items-center justify-center gap-1">
             <IndianRupee className="h-6 w-6 text-primary" />
-            <span className="text-3xl font-bold text-foreground">{formattedPrice || "0"}</span>
+            <span className="text-3xl font-bold text-foreground">
+              {formattedPrice || "0"}
+            </span>
           </div>
           <p className="text-sm text-muted-foreground mt-1">Starting price</p>
         </div>
 
         <div className="space-y-3">
-          <Button className="w-full bg-primary hover:bg-primary/90 text-primary-foreground" size="lg" onClick={(e)=>handleBook(e)}>
+          <Button
+            className="w-full bg-primary hover:bg-primary/90 text-primary-foreground"
+            size="lg"
+            onClick={(e) => handleBook(e)}
+          >
             <Calendar className="h-4 w-4 mr-2" />
             Book Venue
           </Button>
-          <Button className="w-full bg-primary hover:bg-primary/90 text-primary-foreground" size="lg">
+          <Button
+            className="w-full bg-primary hover:bg-primary/90 text-primary-foreground"
+            size="lg"
+            onClick={(e) => handleCheckAvailability(e)}
+          >
             <Calendar className="h-4 w-4 mr-2" />
             Check Availability
           </Button>
@@ -51,7 +74,11 @@ export function PricingCard({ operations, details,setBookVenueModalOpen }) {
             </Button>
           </div>
           <Button variant="secondary" className="w-full gap-2" asChild>
-            <a href={details?.googleMapLink} target="_blank" rel="noopener noreferrer">
+            <a
+              href={details?.googleMapLink}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <MapPin className="h-4 w-4" />
               View on Map
             </a>

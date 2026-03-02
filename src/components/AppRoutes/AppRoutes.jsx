@@ -18,6 +18,7 @@ import PostWedding from "../../pages/dashboard/PostWedding"
 import Venue from "../../pages/dashboard/venue/Venue"
 import {VenueDetail} from "../../pages/dashboard/venue/VenueDetail"
 import ForgotPassword from "@/pages/ForgotPassword"
+import RoleSelectionPage from "@/pages/RoleSelection"
 
 export default function AppRoutes() {
   return (
@@ -29,7 +30,7 @@ export default function AppRoutes() {
         <Route path="/forgotpassword" element={<ForgotPassword/>} />
         <Route path="/register" element={<Register />} />
         <Route path="/events" element={<Events />} />
-        <Route path="/select-role" element={<SelectRole />} />
+        <Route path="/select-role" element={<RoleSelectionPage />} />
         <Route path="/admin" element={<Admin />} />
 
         {/* Dashboard routes — DashboardLayout wraps all children via <Outlet /> */}

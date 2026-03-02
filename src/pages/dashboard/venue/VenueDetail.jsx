@@ -10,13 +10,12 @@ import { MenuGallery } from "./venue-card/menu-gallery";
 import { DocumentsCard } from "./venue-card/documents-card";
 import { ArrowLeft, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Link, useParams } from "react-router-dom";
-import BookModal from "./BookModal";
-import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState } from "react";
 import { categories } from "@/constants/constant";
 import { fetchSelectedVenue } from "@/store/thunks/venueThunks";
-
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useParams } from "react-router-dom";
+import BookModal from "./BookModal";
 
 export const VenueDetail = () => {
   const [bookVenueModalOpen, setBookVenueModalOpen] = useState(false);
@@ -43,7 +42,9 @@ export const VenueDetail = () => {
                 Back to Search
               </Link>
             </Button>
-            <div className="text-sm font-medium text-primary">Wedding Venues</div>
+            <div className="text-sm font-medium text-primary">
+              Wedding Venues
+            </div>
           </div>
         </div>
       </header>
@@ -99,10 +100,12 @@ export const VenueDetail = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="text-center text-sm text-muted-foreground">
             <p>© 2025 Wedding Vendor Platform. All rights reserved.</p>
-            <p className="mt-1">Find your perfect venue for your special day.</p>
+            <p className="mt-1">
+              Find your perfect venue for your special day.
+            </p>
           </div>
         </div>
       </footer>
     </div>
   );
-}
+};
