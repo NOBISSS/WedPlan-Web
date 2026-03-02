@@ -104,6 +104,9 @@ export default function LoginPage() {
             )}
 
             <div className="mt-6 text-center">
+            <Link to="/forgotpassword" className="text-primary hover:underline font-medium">
+                  Forgot Password ?
+                </Link>
               <p className="text-sm text-muted-foreground">
                 {"Don't have an account? "}
                 <Link to="/register" className="text-primary hover:underline font-medium">

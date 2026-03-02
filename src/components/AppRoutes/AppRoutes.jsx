@@ -17,6 +17,7 @@ import Reviews from "../../pages/dashboard/Reviews"
 import PostWedding from "../../pages/dashboard/PostWedding"
 import Venue from "../../pages/dashboard/venue/Venue"
 import {VenueDetail} from "../../pages/dashboard/venue/VenueDetail"
+import ForgotPassword from "@/pages/ForgotPassword"
 
 export default function AppRoutes() {
   return (
@@ -25,6 +26,7 @@ export default function AppRoutes() {
         {/* Public routes */}
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/forgotpassword" element={<ForgotPassword/>} />
         <Route path="/register" element={<Register />} />
         <Route path="/events" element={<Events />} />
         <Route path="/select-role" element={<SelectRole />} />

@@ -1,18 +1,15 @@
-import { BASE_URL } from "@/constants/constant";
+import { BASE_URL, headers } from "@/constants/constant";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 BASE_URL
-const authHeader = (token) => ({
-    headers: { Authorization: `Bearer ${token}` },
-    withCredentials: true,
-});
+
 
 //REGISTER STEP 1
 export const registerWithOTP = createAsyncThunk(
     "auth/registerWithOTP",
     async (userData, { rejectWithValue }) => {
         try {
-            const res = await axios.post(`${BASE_URL}/auth/register`, userData, authHeader(null));
+            const res = await axios.post(`${BASE_URL}/auth/register`, userData, headers(null));
             return { ...res.data, email: userData.email };
         } catch (error) {
             return rejectWithValue(error.response.data.message || "Failed to send OTP");
@@ -36,7 +33,7 @@ export const loginWithEmailOTP = createAsyncThunk(
     "auth/loginWithEmailOTP",
     async (data, { rejectWithValue }) => {
         try {
-            const res = await axios.post(`${BASE_URL}/auth/loginwithemail`, data, authHeader(null));
+            const res = await axios.post(`${BASE_URL}/auth/loginwithemail`, data, headers(null));
             return { ...res.data, email: data.email };
         } catch (error) {
             return rejectWithValue(error.response.data.message || "Failed to send OTP");
@@ -123,7 +120,7 @@ export const getMe = createAsyncThunk(
     async (_, { rejectWithValue }) => {
         try {
             const token = localStorage.getItem("token");
-            const res = await axios.get(`${BASE_URL}/auth/me`, authHeader(token));
+            const res = await axios.get(`${BASE_URL}/auth/me`, headers(token));
             return res.data;
         } catch (error) {
             return rejectWithValue(error.response.data.message || "Failed to fetch user data");
@@ -135,7 +132,7 @@ export const logoutUser = createAsyncThunk(
     async (_, { rejectWithValue }) => {
         try {
             const token = localStorage.getItem("token");
-            await axios.post(`${BASE_URL}/auth/logout`, {}, authHeader(token));
+            await axios.post(`${BASE_URL}/auth/logout`, {}, headers(token));
             localStorage.removeItem("token");
         } catch (error) {
             return rejectWithValue(error.response.data.message || "Failed to logout");

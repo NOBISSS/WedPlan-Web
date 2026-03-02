@@ -12,13 +12,19 @@ import { DocumentsCard } from "./venue-card/documents-card";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
+import BookModal from "./BookModal";
+import { useSelector } from "react-redux";
+import { useState } from "react";
+import { categories } from "@/constants/constant";
 
 
 export const VenueDetail = () => {
+  const [bookVenueModalOpen, setBookVenueModalOpen] = useState(false);
   const { venue, details, operations } = venueData;
+  // const categories = useSelector((state) => state.eventCategory?.categories || ["Wedding", "Reception", "Engagement", "Sangeet"]);
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className={`min-h-screen bg-background`}>
       {/* Header Navigation */}
       <header className="sticky top-0 z-40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b border-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -35,6 +41,10 @@ export const VenueDetail = () => {
       </header>
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      {
+          bookVenueModalOpen &&
+        <BookModal  eventCategory={categories} setBookVenueModalOpen={setBookVenueModalOpen} />
+      }
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Left Column - Main Content */}
           <div className="lg:col-span-2 space-y-6">
@@ -63,7 +73,7 @@ export const VenueDetail = () => {
           {/* Right Column - Sidebar */}
           <div className="space-y-6">
             {/* Pricing Card */}
-            <PricingCard operations={operations} details={details} />
+            <PricingCard operations={operations} details={details}  setBookVenueModalOpen={setBookVenueModalOpen}/>
 
             {/* Operating Hours */}
             <TimingsCard operations={operations} />

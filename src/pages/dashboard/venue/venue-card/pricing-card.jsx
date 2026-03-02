@@ -5,9 +5,12 @@ import { IndianRupee, Calendar, Heart, Share2, MapPin } from "lucide-react";
 import { VenueDetail } from "../VenueDetail";
 
 
-export function PricingCard({ operations, details }) {
+export function PricingCard({ operations, details,setBookVenueModalOpen }) {
   const formattedPrice = new Intl.NumberFormat("en-IN").format(operations.price);
-
+  const handleBook=(e)=>{
+    e.preventDefault();
+    setBookVenueModalOpen(true);
+  }
   return (
     <Card className="border-primary/20 shadow-lg">
       <CardHeader className="pb-3 bg-gradient-to-r from-primary/5 to-primary/10 rounded-t-lg">
@@ -29,6 +32,10 @@ export function PricingCard({ operations, details }) {
         </div>
 
         <div className="space-y-3">
+          <Button className="w-full bg-primary hover:bg-primary/90 text-primary-foreground" size="lg" onClick={(e)=>handleBook(e)}>
+            <Calendar className="h-4 w-4 mr-2" />
+            Book Venue
+          </Button>
           <Button className="w-full bg-primary hover:bg-primary/90 text-primary-foreground" size="lg">
             <Calendar className="h-4 w-4 mr-2" />
             Check Availability
