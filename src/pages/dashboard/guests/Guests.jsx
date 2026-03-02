@@ -114,7 +114,7 @@ function GuestsContent() {
             </CardHeader>
             <CardContent>
               <form onSubmit={handleAddGuest} className="space-y-4">
-                <div className="grid gap-4 md:grid-cols-3">
+                <div className="grid gap-5 md:grid-cols-2">
                   <div className="space-y-2">
                     <Label htmlFor="name">Guest Name</Label>
                     <Input
@@ -149,6 +149,21 @@ function GuestsContent() {
                         <SelectItem value="Family">Family</SelectItem>
                         <SelectItem value="Friend">Friend</SelectItem>
                         <SelectItem value="Relative">Relative</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="side">Side</Label>
+                    <Select
+                      value={newGuest.side}
+                      onValueChange={(value) => setNewGuest({ ...newGuest, side: value })}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select side" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="bride">Bride</SelectItem>
+                        <SelectItem value="groom">Groom</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>

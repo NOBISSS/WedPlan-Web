@@ -1,6 +1,6 @@
 ;
-import { useState } from "react"
-import { MapPin, Calendar, IndianRupee, Check, Users } from "lucide-react"
+import { useEffect, useState } from "react"
+import { MapPin, Calendar, IndianRupee, Check, Users, Loader2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -9,65 +9,76 @@ import { DashboardLayout } from "@/components/DashboardLayout"
 import { VenueFilter } from "./VenueFilter"
 import { Link } from "react-router-dom"
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux"
+import { addCurrentSelectedVenue } from "@/store/slices/venueSlice"
+import { fetchVenues } from "@/store/thunks/venueThunks"
 
-const venues = [
-  {
-    id: 1,
-    name: "Grand Palace Hall",
-    location: "Downtown City",
-    pricePerDay: 50000,
-    capacity: 500,
-    image: "/luxury-wedding-venue-grand-palace-hall.jpg",
-  },
-  {
-    id: 2,
-    name: "Royal Gardens",
-    location: "Green Valley",
-    pricePerDay: 35000,
-    capacity: 300,
-    image: "/beautiful-garden-wedding-venue-with-flowers.jpg",
-  },
-  {
-    id: 3,
-    name: "Sunset Beach Resort",
-    location: "Coastal Area",
-    pricePerDay: 75000,
-    capacity: 200,
-    image: "/beach-resort-wedding-venue-sunset.jpg",
-  },
-  {
-    id: 4,
-    name: "Heritage Manor",
-    location: "Old Town",
-    pricePerDay: 45000,
-    capacity: 400,
-    image: "/heritage-manor-wedding-venue-elegant.jpg",
-  },
-  {
-    id: 5,
-    name: "Skyline Banquet",
-    location: "City Center",
-    pricePerDay: 60000,
-    capacity: 600,
-    image: "/modern-banquet-hall-wedding-venue-skyline.jpg",
-  },
-  {
-    id: 6,
-    name: "Lakeside Pavilion",
-    location: "Lake District",
-    pricePerDay: 55000,
-    capacity: 350,
-    image: "/lakeside-wedding-venue-pavilion-romantic.jpg",
-  },
-]
+// const venues = [
+//   {
+//     id: 1,
+//     name: "Grand Palace Hall",
+//     location: "Downtown City",
+//     price: 50000,
+//     capacity: 500,
+//     image: "/luxury-wedding-venue-grand-palace-hall.jpg",
+//   },
+//   {
+//     id: 2,
+//     name: "Royal Gardens",
+//     location: "Green Valley",
+//     price: 35000,
+//     capacity: 300,
+//     image: "/beautiful-garden-wedding-venue-with-flowers.jpg",
+//   },
+//   {
+//     id: 3,
+//     name: "Sunset Beach Resort",
+//     location: "Coastal Area",
+//     price: 75000,
+//     capacity: 200,
+//     image: "/beach-resort-wedding-venue-sunset.jpg",
+//   },
+//   {
+//     id: 4,
+//     name: "Heritage Manor",
+//     location: "Old Town",
+//     price: 45000,
+//     capacity: 400,
+//     image: "/heritage-manor-wedding-venue-elegant.jpg",
+//   },
+//   {
+//     id: 5,
+//     name: "Skyline Banquet",
+//     location: "City Center",
+//     price: 60000,
+//     capacity: 600,
+//     image: "/modern-banquet-hall-wedding-venue-skyline.jpg",
+//   },
+//   {
+//     id: 6,
+//     name: "Lakeside Pavilion",
+//     location: "Lake District",
+//     price: 55000,
+//     capacity: 350,
+//     image: "/lakeside-wedding-venue-pavilion-romantic.jpg",
+//   },
+// ]
 
 export default function VenuePage() {
+  const dispatch=useDispatch();
   const [selectedVenue, setSelectedVenue] = useState(null)
   const [numberOfDays, setNumberOfDays] = useState(1)
   const [isFilterOpen, setIsFilterOpen] = useState(false);
-  const selectedVenueData = venues.find((v) => v.id === selectedVenue)
-  const totalCost = selectedVenueData ? selectedVenueData.pricePerDay * numberOfDays : 0
+  const {venues,loading}=useSelector((state)=>state.venue || []);
+  const selectedVenueData = useSelector((state)=>state.venue.currentSelectedVenue || null);
+  
+  const totalCost = selectedVenueData ? selectedVenueData.price * numberOfDays : 0
   const navigate = useNavigate();
+
+  useEffect(() => {
+    dispatch(fetchVenues());
+  },[])
+
   return (
     
       <div className="space-y-6">
@@ -93,22 +104,24 @@ export default function VenuePage() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {venues.map((venue) => {
-            const isSelected = selectedVenue === venue.id
+
+          { loading ? <div className="text-center flex items-center justify-center col-span-full h-64"><Loader2 className="h-8 w-8 animate-spin text-blue-600" /></div> : venues.map((venue) => {
+            const isSelected = selectedVenue === venue.venueId
             return (
               <Card
-                key={venue.id}
+                key={venue.venueId}
                 className={`overflow-hidden cursor-pointer transition-all ${isSelected ? "ring-2 ring-primary border-primary" : "hover:shadow-lg"
                   }`}
                 onClick={() => {
-                  navigate(`/venue/${venue.id}`)
-                  navigate(`/dashboard/venue/${venue.id}`)
-                  setSelectedVenue(venue.id)
+                  navigate(`/venue/${venue.venueId}`)
+                  navigate(`/dashboard/venue/${venue.venueId}`)
+                  dispatch(addCurrentSelectedVenue(venue))
+                  setSelectedVenue(venue.venueId)
                 }}
               >
                 <div className="relative aspect-video">
                   <img
-                    src={venue.image || "/placeholder.svg"}
+                    src={venue.coverImage || "/placeholder.svg"}
                     alt={venue.name}
                     className="w-full h-full object-cover"
                   />
@@ -131,7 +144,7 @@ export default function VenuePage() {
                     </div>
                     <div className="flex items-center gap-2">
                       <IndianRupee className="h-4 w-4" />
-                      <span className="font-semibold text-foreground">{venue.pricePerDay.toLocaleString()} / day</span>
+                      <span className="font-semibold text-foreground">{venue.price.toLocaleString()} / day</span>
                     </div>
                   </div>
                   <Button className="w-full mt-4" variant={isSelected ? "default" : "outline"}>
@@ -144,7 +157,7 @@ export default function VenuePage() {
         </div>
 
         {selectedVenue && (
-          <Card>
+          <Card className="border-primary/20 shadow-lg mt-6 bg-amber-300">
             <CardHeader>
               <CardTitle>Booking Details</CardTitle>
               <CardDescription>Configure your venue booking</CardDescription>
@@ -176,7 +189,7 @@ export default function VenuePage() {
               <div className="mt-6 p-4 bg-muted rounded-lg">
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-muted-foreground">
-                    Price per day: ₹{selectedVenueData?.pricePerDay.toLocaleString()}
+                    Price per day: ₹{selectedVenueData?.price.toLocaleString()}
                   </span>
                 </div>
                 <div className="flex items-center justify-between text-lg font-semibold">

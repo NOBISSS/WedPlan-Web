@@ -76,4 +76,4 @@ export const venueData = {
     noiseRestrictions:
       "Music must be lowered after 10 PM as per local regulations. Indoor events can continue until closing time.",
   },
-};
+}; 

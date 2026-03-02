@@ -8,19 +8,19 @@ export function DocumentsCard({ details }) {
     {
       icon: CreditCard,
       label: "PAN Number",
-      value: details.PANNumber,
+      value: details?.PANNumber,
       masked: true,
     },
     {
       icon: QrCode,
       label: "UPI ID",
-      value: details.UPIid,
+      value: details?.UPIid,
       masked: false,
     },
     {
       icon: ShieldCheck,
       label: "FSSAI Certificate",
-      value: details.FSSAICertificate,
+      value: details?.FSSAICertificate,
       masked: true,
     },
   ];
@@ -40,17 +40,17 @@ export function DocumentsCard({ details }) {
       </CardHeader>
       <CardContent>
         <div className="space-y-3">
-          {documents.map((doc) => (
+          {details && documents.map((doc) => (
             <div
-              key={doc.label}
+              key={doc?.label}
               className="flex items-center justify-between py-2 px-3 bg-secondary/30 rounded-lg"
             >
               <div className="flex items-center gap-3">
                 <doc.icon className="h-4 w-4 text-muted-foreground" />
-                <span className="text-sm text-muted-foreground">{doc.label}</span>
+                <span className="text-sm text-muted-foreground">{doc?.label}</span>
               </div>
               <span className="text-sm font-mono text-foreground">
-                {doc.masked ? maskValue(doc.value) : doc.value}
+                {doc?.masked ? maskValue(doc?.value) : doc?.value}
               </span>
             </div>
           ))}

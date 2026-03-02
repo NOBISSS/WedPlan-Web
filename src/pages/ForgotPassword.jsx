@@ -1,110 +1,17 @@
+import { verifyForgotPasswordOTP } from "@/store/thunks/authThunks";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+
+
 
 export default function ForgotPassword() {
-  const [contactNumber, setContactNumber] = useState("");
-  const [email, setEmail] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [sent, setSent] = useState(false);
-
-  const handleGetOTP = () => {
-    if (!contactNumber && !email) return;
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-      setSent(true);
-    }, 1500);
-  };
-
-  return (
-    <div style={styles.page}>
-      {/* Header */}
-      <div style={styles.header}>
-        <h1 style={styles.logo}>WEDPLAN</h1>
-      </div>
-
-      {/* Card */}
-      <div style={styles.cardWrapper}>
-        <div style={styles.card}>
-          <h2 style={styles.title}>Forgot Password</h2>
-
-          {sent ? (
-            <div style={styles.successBox}>
-              <div style={styles.successIcon}>✓</div>
-              <p style={styles.successText}>OTP sent successfully!</p>
-              <p style={styles.successSub}>Please check your phone or email.</p>
-            </div>
-          ) : (
-            <>
-              {/* Contact Number */}
-              <div style={styles.fieldGroup}>
-                <label style={styles.label}>
-                  Contact Number <span style={styles.required}>*</span>
-                </label>
-                <input
-                  type="tel"
-                  placeholder="Enter your contact number"
-                  value={contactNumber}
-                  onChange={(e) => setContactNumber(e.target.value)}
-                  style={styles.input}
-                  onFocus={(e) => (e.target.style.borderColor = "#4f46e5")}
-                  onBlur={(e) => (e.target.style.borderColor = "transparent")}
-                />
-              </div>
-
-              {/* OR Divider */}
-              <div style={styles.divider}>
-                <span style={styles.dividerLine} />
-                <span style={styles.dividerText}>OR</span>
-                <span style={styles.dividerLine} />
-              </div>
-
-              {/* Email */}
-              <div style={styles.fieldGroup}>
-                <label style={styles.label}>Email ID</label>
-                <input
-                  type="email"
-                  placeholder="Enter your email address"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  style={styles.input}
-                  onFocus={(e) => (e.target.style.borderColor = "#4f46e5")}
-                  onBlur={(e) => (e.target.style.borderColor = "transparent")}
-                />
-              </div>
-
-              {/* OTP Button */}
-              <button
-                onClick={handleGetOTP}
-                disabled={loading || (!contactNumber && !email)}
-                style={{
-                  ...styles.otpButton,
-                  opacity: !contactNumber && !email ? 0.6 : 1,
-                  cursor: !contactNumber && !email ? "not-allowed" : "pointer",
-                }}
-              >
-                {loading ? (
-                  <span style={styles.spinner}>⟳</span>
-                ) : (
-                  "Get OTP"
-                )}
-              </button>
-            </>
-          )}
-
-          {/* Back */}
-          <button style={styles.backBtn} onClick={() => setSent(false)}>
-            ← Back
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-const styles = {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const styles = {
   page: {
     minHeight: "100vh",
-    background: "linear-gradient(160deg, #1e40af 0%, #3b82f6 50%, #f0f4ff 100%)",
+    background: "linear-gradient(180deg, #1e40af 0%, #3b82f6 25%, #f0f4ff 10%)",
     fontFamily: "'Segoe UI', sans-serif",
     display: "flex",
     flexDirection: "column",
@@ -118,11 +25,11 @@ const styles = {
   },
   logo: {
     color: "#fff",
-    fontSize: "2.5rem",
+    fontSize: "2.4rem",
     fontWeight: "800",
     letterSpacing: "0.15em",
     margin: 0,
-    textShadow: "0 2px 12px rgba(0,0,0,0.15)",
+    textShadow: "0 5px 12px rgba(0,0,0,0.15)",
   },
   cardWrapper: {
     display: "flex",
@@ -246,3 +153,106 @@ const styles = {
     fontSize: "1.2rem",
   },
 };
+
+  const [contactNumber, setContactNumber] = useState("");
+  const [email, setEmail] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [sent, setSent] = useState(false);
+
+  const handleGetOTP = async () => {
+    if (!contactNumber && !email) return;
+    setLoading(true);
+    await dispatch(verifyForgotPasswordOTP({ contactNumber, email })); // Assuming sendOtp is an async action
+    setTimeout(() => {
+      setLoading(false);
+      setSent(true);
+    }, 1500);
+  };
+
+  return (
+    <div style={styles.page}>
+      {/* Header */}
+      <div style={styles.header}>
+        <h1 style={styles.logo}>WEDPLAN</h1>
+      </div>
+
+      {/* Card */}
+      <div style={styles.cardWrapper}>
+        <div style={styles.card}>
+          <h2 style={styles.title}>Forgot Password</h2>
+
+          {sent ? (
+            <div style={styles.successBox}>
+              <div style={styles.successIcon}>✓</div>
+              <p style={styles.successText}>OTP sent successfully!</p>
+              <p style={styles.successSub}>Please check your phone or email.</p>
+            </div>
+          ) : (
+            <>
+              {/* Contact Number */}
+              <div style={styles.fieldGroup}>
+                <label style={styles.label}>
+                  Contact Number <span style={styles.required}>*</span>
+                </label>
+                <input
+                  type="tel"
+                  placeholder="Enter your contact number"
+                  value={contactNumber}
+                  onChange={(e) => setContactNumber(e.target.value)}
+                  style={styles.input}
+                  onFocus={(e) => (e.target.style.borderColor = "#4f46e5")}
+                  onBlur={(e) => (e.target.style.borderColor = "transparent")}
+                />
+              </div>
+
+              {/* OR Divider */}
+              <div style={styles.divider}>
+                <span style={styles.dividerLine} />
+                <span style={styles.dividerText}>OR</span>
+                <span style={styles.dividerLine} />
+              </div>
+
+              {/* Email */}
+              <div style={styles.fieldGroup}>
+                <label style={styles.label}>Email ID</label>
+                <input
+                  type="email"
+                  placeholder="Enter your email address"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  style={styles.input}
+                  onFocus={(e) => (e.target.style.borderColor = "#4f46e5")}
+                  onBlur={(e) => (e.target.style.borderColor = "transparent")}
+                />
+              </div>
+
+              {/* OTP Button */}
+              <button
+                onClick={handleGetOTP}
+                disabled={loading || (!contactNumber && !email)}
+                style={{
+                  ...styles.otpButton,
+                  opacity: !contactNumber && !email ? 0.6 : 1,
+                  cursor: !contactNumber && !email ? "not-allowed" : "pointer",
+                }}
+              >
+                {loading ? (
+                  <span style={styles.spinner}>⟳</span>
+                ) : (
+                  "Get OTP"
+                )}
+              </button>
+            </>
+          )}
+
+          {/* Back */}
+          <button style={styles.backBtn} onClick={() => setSent(false)}>
+            ← Back
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+

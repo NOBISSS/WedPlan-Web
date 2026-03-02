@@ -11,18 +11,18 @@ export function MenuGallery({ menuImages }) {
   const [selectedImage, setSelectedImage] = useState(null);
 
   const nextImage = () => {
-    if (selectedImage !== null) {
+    if (selectedImage !== null && menuImages && menuImages.length > 0) {
       setSelectedImage((selectedImage + 1) % menuImages.length);
     }
   };
 
   const prevImage = () => {
-    if (selectedImage !== null) {
+    if (selectedImage !== null && menuImages && menuImages.length > 0) {
       setSelectedImage((selectedImage - 1 + menuImages.length) % menuImages.length);
     }
   };
 
-  if (menuImages.length === 0) return null;
+  if (menuImages && menuImages.length === 0) return null;
 
   return (
     <>
@@ -35,7 +35,7 @@ export function MenuGallery({ menuImages }) {
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-2 gap-3">
-            {menuImages.map((image, index) => (
+            {menuImages && menuImages.map((image, index) => (
               <button
                 key={index}
                 onClick={() => setSelectedImage(index)}
@@ -98,7 +98,7 @@ export function MenuGallery({ menuImages }) {
           </Button>
 
           <div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-background text-sm">
-            {selectedImage + 1} / {menuImages.length}
+            {selectedImage + 1} / {menuImages && menuImages.length}
           </div>
         </div>
       )}
