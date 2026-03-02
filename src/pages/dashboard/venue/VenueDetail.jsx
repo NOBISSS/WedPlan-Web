@@ -20,7 +20,10 @@ import { categories } from "@/constants/constant";
 
 export const VenueDetail = () => {
   const [bookVenueModalOpen, setBookVenueModalOpen] = useState(false);
-  const { venue, details, operations } = venueData;
+  const venue = useSelector((state) => state.venue?.currentSelectedVenue || {});
+  const details=venue.details;
+  const operations=venue.operations;
+  
   // const categories = useSelector((state) => state.eventCategory?.categories || ["Wedding", "Reception", "Engagement", "Sangeet"]);
 
   return (

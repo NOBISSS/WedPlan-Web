@@ -75,7 +75,8 @@ const StepOne = ({setBookVenueModalOpen, eventCategory, setStep, savedData,onSte
                     </div>
 
                     {/* Row 2: Event Type */}
-                    <div className='flex flex-col w-full'>
+                    <div className='flex  w-full gap-2'>
+                        <div className='w-1/2 '>
                         <label htmlFor='type' className='mb-1 font-medium'>Event Type</label>
                         <select
                             className='py-2 px-3 border border-gray-300 rounded-md w-full focus:outline-none focus:border-blue-700'
@@ -90,6 +91,19 @@ const StepOne = ({setBookVenueModalOpen, eventCategory, setStep, savedData,onSte
                             ))}
                         </select>
                         {errors.type && <p className="text-red-500 text-sm mt-1">{errors.type.message}</p>}
+                        </div>
+                        <div className='flex flex-col flex-1'>
+                            <label htmlFor='totalBudget' className='mb-1 font-medium'>Budget</label>
+                            <input
+                                className='rounded-md py-2 px-3 border border-gray-300 focus:outline-none focus:border-blue-700 w-full'
+                                type='text'
+                                id='totalBudget'
+                                name='totalBudget'
+                                placeholder='Enter budget of Event'
+                                {...register("totalBudget", { required: "Budget is required" })}
+                            />
+                            {errors.totalBudget && <p className="text-red-500 text-sm mt-1">{errors.totalBudget.message}</p>}
+                        </div>
                     </div>
 
                     {/* Row 3: Start Date & End Date */}
