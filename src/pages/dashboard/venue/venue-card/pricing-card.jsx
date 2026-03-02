@@ -6,7 +6,7 @@ import { VenueDetail } from "../VenueDetail";
 
 
 export function PricingCard({ operations, details,setBookVenueModalOpen }) {
-  const formattedPrice = new Intl.NumberFormat("en-IN").format(operations.price);
+  const formattedPrice = new Intl.NumberFormat("en-IN").format(operations?.price);
   const handleBook=(e)=>{
     e.preventDefault();
     setBookVenueModalOpen(true);
@@ -26,7 +26,7 @@ export function PricingCard({ operations, details,setBookVenueModalOpen }) {
         <div className="text-center py-4 bg-secondary/30 rounded-lg">
           <div className="flex items-center justify-center gap-1">
             <IndianRupee className="h-6 w-6 text-primary" />
-            <span className="text-3xl font-bold text-foreground">{formattedPrice}</span>
+            <span className="text-3xl font-bold text-foreground">{formattedPrice || "0"}</span>
           </div>
           <p className="text-sm text-muted-foreground mt-1">Starting price</p>
         </div>
@@ -51,7 +51,7 @@ export function PricingCard({ operations, details,setBookVenueModalOpen }) {
             </Button>
           </div>
           <Button variant="secondary" className="w-full gap-2" asChild>
-            <a href={details.googleMapLink} target="_blank" rel="noopener noreferrer">
+            <a href={details?.googleMapLink} target="_blank" rel="noopener noreferrer">
               <MapPin className="h-4 w-4" />
               View on Map
             </a>

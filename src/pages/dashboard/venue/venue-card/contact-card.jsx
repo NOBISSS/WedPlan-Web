@@ -21,7 +21,7 @@ export function ContactCard({ details }) {
             </div>
             <div>
               <p className="text-xs text-muted-foreground">Owner</p>
-              <p className="text-sm font-medium text-foreground">{details.ownersFullName}</p>
+              <p className="text-sm font-medium text-foreground">{details?.ownersFullName}</p>
             </div>
           </div>
           <div className="flex items-center gap-3">
@@ -30,22 +30,22 @@ export function ContactCard({ details }) {
             </div>
             <div>
               <p className="text-xs text-muted-foreground">Manager</p>
-              <p className="text-sm font-medium text-foreground">{details.manager}</p>
+              <p className="text-sm font-medium text-foreground">{details?.manager}</p>
             </div>
           </div>
         </div>
 
         <div className="border-t border-border pt-4 space-y-2">
           <Button variant="outline" className="w-full justify-start gap-2 bg-transparent" asChild>
-            <a href={`tel:${details.contactNo}`}>
+            <a href={`tel:${details?.contactNo}`}>
               <Phone className="h-4 w-4" />
-              {details.contactNo}
+              {details?.contactNo}
             </a>
           </Button>
           <Button variant="outline" className="w-full justify-start gap-2 bg-transparent" asChild>
-            <a href={`mailto:${details.email}`}>
+            <a href={`mailto:${details?.email}`}>
               <Mail className="h-4 w-4" />
-              {details.email}
+              {details?.email}
             </a>
           </Button>
           <Button
@@ -53,7 +53,7 @@ export function ContactCard({ details }) {
             asChild
           >
             <a
-              href={`https://wa.me/${details.whatsappNumber.replace(/\D/g, "")}`}
+              href={`https://wa.me/${details?.whatsappNumber.replace(/\D/g, "")}`}
               target="_blank"
               rel="noopener noreferrer"
             >

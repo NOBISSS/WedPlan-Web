@@ -26,7 +26,7 @@ export function ImageGallery({ images, venueName }) {
           onClick={() => setIsLightboxOpen(true)}
         >
           <img
-            src={images[selectedImage] || "/placeholder.svg"}
+            src={images && images[selectedImage] ? images[selectedImage] : "/placeholder.svg"}
             alt={`${venueName} - Main view`}
             fill
             className="object-cover transition-transform duration-300 group-hover:scale-105"
@@ -34,13 +34,13 @@ export function ImageGallery({ images, venueName }) {
           />
           <div className="absolute inset-0 bg-gradient-to-t from-foreground/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
           <div className="absolute bottom-4 right-4 bg-foreground/70 text-background px-3 py-1 rounded-full text-sm font-medium">
-            {selectedImage + 1} / {images.length}
+            {selectedImage + 1} / {images && images.length}
           </div>
         </div>
 
         {/* Thumbnail Strip */}
         <div className="flex gap-2 overflow-x-auto pb-2">
-          {images.map((image, index) => (
+          {images && images.map((image, index) => (
             <button
               key={index}
               onClick={() => setSelectedImage(index)}

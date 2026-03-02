@@ -1,7 +1,6 @@
 import { BASE_URL, headers } from "@/constants/constant";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-BASE_URL
 
 
 //REGISTER STEP 1
@@ -33,8 +32,8 @@ export const loginWithEmailOTP = createAsyncThunk(
     "auth/loginWithEmailOTP",
     async (data, { rejectWithValue }) => {
         try {
-            const res = await axios.post(`${BASE_URL}/auth/loginwithemail`, data, headers(null));
-            return { ...res.data, email: data.email };
+            const res = await axios.post(`${BASE_URL}/auth/loginwithemail`, {contactNoOREmail:data}, headers(null));
+            return { ...res.data, email: data.contactNoOREmail };
         } catch (error) {
             return rejectWithValue(error.response.data.message || "Failed to send OTP");
         }
@@ -45,7 +44,7 @@ export const verifyLoginOTP = createAsyncThunk(
     "auth/verifyLoginOTP",
     async (data, { rejectWithValue }) => {
         try {
-            const res = await axios.post(`${BASE_URL}/auth/verifyloginotp`, data);
+            const res = await axios.post(`${BASE_URL}/auth/loginwithemail/verify`, {OTP:data}, {withCredentials: true});
             localStorage.setItem("token", res.data.token);
             return res.data;
         } catch (error) {

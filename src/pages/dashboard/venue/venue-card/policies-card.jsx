@@ -11,7 +11,7 @@ const foodTypeLabels = {
 };
 
 export function PoliciesCard({ operations, details }) {
-  const foodInfo = foodTypeLabels[details.foodType];
+  const foodInfo = foodTypeLabels[details?.foodType];
 
   return (
     <Card className="border-border/50 shadow-sm">
@@ -25,13 +25,13 @@ export function PoliciesCard({ operations, details }) {
         <div className="space-y-3">
           {/* Food Type */}
           <div className="flex items-start gap-3 p-3 bg-secondary/30 rounded-lg">
-            <div className={`mt-0.5 ${foodInfo.color}`}>
-              <foodInfo.icon className="h-5 w-5" />
+            <div className={`mt-0.5 ${foodInfo?.color}`}>
+              {foodInfo && <foodInfo.icon className="h-5 w-5" />}
             </div>
             <div>
               <p className="text-sm font-medium text-foreground">Food Type</p>
               <Badge variant="outline" className="mt-1">
-                {foodInfo.label}
+                {foodInfo?.label}
               </Badge>
             </div>
           </div>
@@ -43,7 +43,7 @@ export function PoliciesCard({ operations, details }) {
             </div>
             <div>
               <p className="text-sm font-medium text-foreground">Cancellation Policy</p>
-              <p className="text-sm text-muted-foreground mt-1">{operations.cancellationPolicy}</p>
+              <p className="text-sm text-muted-foreground mt-1">{operations?.cancellationPolicy}</p>
             </div>
           </div>
 
@@ -54,7 +54,7 @@ export function PoliciesCard({ operations, details }) {
             </div>
             <div>
               <p className="text-sm font-medium text-foreground">Noise Restrictions</p>
-              <p className="text-sm text-muted-foreground mt-1">{operations.noiseRestrictions}</p>
+              <p className="text-sm text-muted-foreground mt-1">{operations?.noiseRestrictions}</p>
             </div>
           </div>
         </div>

@@ -42,7 +42,7 @@ export default function AppRoutes() {
           <Route path="reviews" element={<Reviews />} />
           <Route path="post-wedding" element={<PostWedding />} />
           <Route path="venue" element={<Venue />} />
-          <Route path="venue/:id" element={<VenueDetail />} />
+          <Route path="venue/:id" element={<VenueDetail/>} />
         </Route>
       </Routes>
     </BrowserRouter>

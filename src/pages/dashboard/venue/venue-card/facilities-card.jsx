@@ -45,7 +45,7 @@ export function FacilitiesCard({ details }) {
       </CardHeader>
       <CardContent>
         <div className="flex flex-wrap gap-2">
-          {details.facilities.map((facility) => {
+          {details && details.facilities.map((facility) => {
             const Icon = facilityIcons[facility] || Sparkles;
             return (
               <Badge

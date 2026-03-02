@@ -1,6 +1,6 @@
 ;
-import { useState } from "react"
-import { MapPin, Calendar, IndianRupee, Check, Users } from "lucide-react"
+import { useEffect, useState } from "react"
+import { MapPin, Calendar, IndianRupee, Check, Users, Loader2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -11,6 +11,7 @@ import { Link } from "react-router-dom"
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux"
 import { addCurrentSelectedVenue } from "@/store/slices/venueSlice"
+import { fetchVenues } from "@/store/thunks/venueThunks"
 
 // const venues = [
 //   {
@@ -68,11 +69,16 @@ export default function VenuePage() {
   const [selectedVenue, setSelectedVenue] = useState(null)
   const [numberOfDays, setNumberOfDays] = useState(1)
   const [isFilterOpen, setIsFilterOpen] = useState(false);
-  const venues=useSelector((state)=>state.venue?.venues);
+  const {venues,loading}=useSelector((state)=>state.venue || []);
   const selectedVenueData = useSelector((state)=>state.venue.currentSelectedVenue || null);
   
   const totalCost = selectedVenueData ? selectedVenueData.price * numberOfDays : 0
   const navigate = useNavigate();
+
+  useEffect(() => {
+    dispatch(fetchVenues());
+  },[])
+
   return (
     
       <div className="space-y-6">
@@ -98,23 +104,24 @@ export default function VenuePage() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {venues.map((venue) => {
-            const isSelected = selectedVenue === venue.id
+
+          { loading ? <div className="text-center flex items-center justify-center col-span-full h-64"><Loader2 className="h-8 w-8 animate-spin text-blue-600" /></div> : venues.map((venue) => {
+            const isSelected = selectedVenue === venue.venueId
             return (
               <Card
-                key={venue.id}
+                key={venue.venueId}
                 className={`overflow-hidden cursor-pointer transition-all ${isSelected ? "ring-2 ring-primary border-primary" : "hover:shadow-lg"
                   }`}
                 onClick={() => {
-                  navigate(`/venue/${venue.id}`)
-                  navigate(`/dashboard/venue/${venue.id}`)
+                  navigate(`/venue/${venue.venueId}`)
+                  navigate(`/dashboard/venue/${venue.venueId}`)
                   dispatch(addCurrentSelectedVenue(venue))
-                  setSelectedVenue(venue.id)
+                  setSelectedVenue(venue.venueId)
                 }}
               >
                 <div className="relative aspect-video">
                   <img
-                    src={venue.image || "/placeholder.svg"}
+                    src={venue.coverImage || "/placeholder.svg"}
                     alt={venue.name}
                     className="w-full h-full object-cover"
                   />

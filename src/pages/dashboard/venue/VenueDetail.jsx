@@ -1,4 +1,3 @@
-import { venueData } from "@/data/venue-data";
 import { ImageGallery } from "./venue-card/image-gallery";
 import { VenueHeader } from "./venue-card/venue-header";
 import { CapacityCard } from "./venue-card/capacity-card";
@@ -11,20 +10,24 @@ import { MenuGallery } from "./venue-card/menu-gallery";
 import { DocumentsCard } from "./venue-card/documents-card";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import BookModal from "./BookModal";
-import { useSelector } from "react-redux";
-import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from "react";
 import { categories } from "@/constants/constant";
+import { fetchSelectedVenue } from "@/store/thunks/venueThunks";
 
 
 export const VenueDetail = () => {
   const [bookVenueModalOpen, setBookVenueModalOpen] = useState(false);
   const venue = useSelector((state) => state.venue?.currentSelectedVenue || {});
-  const details=venue.details;
-  const operations=venue.operations;
-  
-  // const categories = useSelector((state) => state.eventCategory?.categories || ["Wedding", "Reception", "Engagement", "Sangeet"]);
+  const details=venue?.details;
+  const venueId=useParams().id;
+  const operations=venue?.operations;
+  const dispath=useDispatch();
+  useEffect(()=>{
+    dispath(fetchSelectedVenue(venueId));
+  },[])
 
   return (
     <div className={`min-h-screen bg-background`}>
@@ -48,11 +51,12 @@ export const VenueDetail = () => {
           bookVenueModalOpen &&
         <BookModal  eventCategory={categories} setBookVenueModalOpen={setBookVenueModalOpen} />
       }
+       { venue &&
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Left Column - Main Content */}
           <div className="lg:col-span-2 space-y-6">
             {/* Image Gallery */}
-            <ImageGallery images={details.images} venueName={venue.name} />
+            <ImageGallery images={details?.images} venueName={venue.name} />
 
             {/* Venue Header */}
             <VenueHeader venue={venue} details={details} />
@@ -67,7 +71,7 @@ export const VenueDetail = () => {
             <PoliciesCard operations={operations} details={details} />
 
             {/* Menu Gallery */}
-            <MenuGallery menuImages={details.menuImages} />
+            <MenuGallery menuImages={details?.menuImages} />
 
             {/* Documents Card */}
             <DocumentsCard details={details} />
@@ -85,6 +89,7 @@ export const VenueDetail = () => {
             <ContactCard details={details} />
           </div>
         </div>
+       }
       </main>
 
       {/* Footer */}

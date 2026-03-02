@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Clock } from "lucide-react";
 
-const dayOrder = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+const dayOrder = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"];
 
 export function TimingsCard({ operations }) {
   const today = new Date().toLocaleDateString("en-US", { weekday: "long" });
@@ -16,10 +16,10 @@ export function TimingsCard({ operations }) {
       </CardHeader>
       <CardContent>
         <div className="space-y-2">
-          {dayOrder.map((day) => {
-            const timing = operations.weeklyTimings[day];
+          {dayOrder &&  dayOrder.map((day) => {
+            const timing = operations?.weeklyTimings[day];
             const isToday = day === today;
-
+            
             return (
               <div
                 key={day}
@@ -28,7 +28,7 @@ export function TimingsCard({ operations }) {
                 }`}
               >
                 <span
-                  className={`text-sm ${
+                  className={`text-sm capitalize ${
                     isToday ? "font-semibold text-primary" : "text-foreground"
                   }`}
                 >
@@ -41,15 +41,15 @@ export function TimingsCard({ operations }) {
                 </span>
                 <span
                   className={`text-sm ${
-                    timing?.isOpen
+                    timing?.isAvailable
                       ? isToday
                         ? "font-medium text-primary"
                         : "text-foreground"
                       : "text-muted-foreground"
                   }`}
                 >
-                  {timing?.isOpen
-                    ? `${timing.openTime} - ${timing.closeTime}`
+                  {timing?.isAvailable
+                    ? `${timing.timeSlots.start} - ${timing.timeSlots.end}`
                     : "Closed"}
                 </span>
               </div>

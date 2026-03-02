@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchVenues } from "../thunks/venueThunks";
+import { fetchVenues,fetchSelectedVenue } from "../thunks/venueThunks";
 
 const venueSlice=createSlice({
     name:'venue',
@@ -24,7 +24,19 @@ const venueSlice=createSlice({
             state.loading=false;
             state.error=action.error.message;
         })
-            
+        builder
+        .addCase(fetchSelectedVenue.pending,(state)=>{
+            state.loading=true;
+            state.error=null;
+        })
+        .addCase(fetchSelectedVenue.fulfilled,(state,action)=>{
+            state.loading=false;
+            state.currentSelectedVenue=action.payload;
+        })
+        .addCase(fetchSelectedVenue.rejected,(state,action)=>{
+            state.loading=false;
+            state.error=action.error.message;
+        })    
     },
     reducers:{
         addCurrentSelectedVenue:(state,action)=>{

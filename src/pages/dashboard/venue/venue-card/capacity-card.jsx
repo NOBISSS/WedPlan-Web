@@ -8,26 +8,26 @@ export function CapacityCard({ details }) {
     {
       icon: Building2,
       label: "Halls",
-      count: details.totalHall,
-      capacity: details.hallCapacity,
+      count: details?.totalHall,
+      capacity: details?.hallCapacity,
     },
     {
       icon: Trees,
       label: "Lawns",
-      count: details.totalLawn,
-      capacity: details.lawnCapacity,
+      count: details?.totalLawn,
+      capacity: details?.lawnCapacity,
     },
     {
       icon: BedDouble,
       label: "Rooms",
-      count: details.totalRoom,
-      capacity: details.roomCapacity,
+      count: details?.totalRoom,
+      capacity: details?.roomCapacity,
     },
     {
       icon: Car,
       label: "Parking",
       count: null,
-      capacity: details.parkingCapacity,
+      capacity: details?.parkingCapacity,
     },
   ];
 
@@ -41,19 +41,19 @@ export function CapacityCard({ details }) {
       </CardHeader>
       <CardContent>
         <div className="grid grid-cols-2 gap-4">
-          {capacityItems.map((item) => (
+          {capacityItems && capacityItems.map((item) => (
             <div
-              key={item.label}
+              key={item?.label}
               className="flex items-center gap-3 p-3 rounded-lg bg-secondary/50"
             >
               <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">
                 <item.icon className="h-5 w-5 text-primary" />
               </div>
               <div>
-                <p className="text-sm text-muted-foreground">{item.label}</p>
+                <p className="text-sm text-muted-foreground">{item?.label}</p>
                 <p className="font-semibold text-foreground">
-                  {item.count !== null && `${item.count} × `}
-                  {item.capacity} guests
+                  {item?.count !== null && `${item.count} × `}
+                  {item?.capacity} guests
                 </p>
               </div>
             </div>

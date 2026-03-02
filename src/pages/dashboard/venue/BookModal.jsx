@@ -173,19 +173,94 @@ const StepTwo = ({ setBookVenueModalOpen, setStep,savedData,onStepComplete,stepI
             <form onSubmit={handleSubmit(onSubmit)}>
                 <div className='flex flex-col gap-4'>
 
-                    <div className='flex flex-col flex-1'>
-                        <label className='mb-1 font-medium'>Total Budget</label>
-                        <input
-                            className='rounded-md py-2 px-3 border border-gray-300 focus:outline-none focus:border-blue-700 w-full'
-                            type='number'
-                            placeholder='Enter total budget'
-                            {...register("totalBudget", { required: "Budget is required", min: { value: 1, message: "Budget must be greater than 0" } })}
-                        />
-                        {errors.totalBudget && <p className="text-red-500 text-sm mt-1">{errors.totalBudget.message}</p>}
+                    {/* Row 1: Title & Description */}
+                    <div className='flex w-full gap-4'>
+                        <div className='flex flex-col flex-1'>
+                            <label htmlFor='title' className='mb-1 font-medium'>Title</label>
+                            <input
+                                className='rounded-md py-2 px-3 border border-gray-300 focus:outline-none focus:border-blue-700 w-full'
+                                type='text'
+                                id='title'
+                                placeholder='Enter title of Event'
+                                {...register("title", { required: "Title is required" })}
+                            />
+                            {errors.title && <p className="text-red-500 text-sm mt-1">{errors.title.message}</p>}
+                        </div>
+                        <div className='flex flex-col flex-1'>
+                            <label htmlFor='description' className='mb-1 font-medium'>Description</label>
+                            <input
+                                className='rounded-md py-2 px-3 border border-gray-300 focus:outline-none focus:border-blue-700 w-full'
+                                type='text'
+                                id='description'
+                                placeholder='Enter description of Event'
+                                {...register("description", { required: "Description is required" })}
+                            />
+                            {errors.description && <p className="text-red-500 text-sm mt-1">{errors.description.message}</p>}
+                        </div>
                     </div>
 
-                    {/* Add more step 2 fields here */}
+                    {/* Row 2: Event Type */}
 
+                    {/* Row 3: Start Date & End Date */}
+                    <div className='flex w-full gap-4'>
+                        <div className='flex flex-col flex-1'>
+                            <label htmlFor='startTime' className='mb-1 font-medium'>Start Time</label>
+                            <input
+                                className='rounded-md py-2 px-3 border border-gray-300 focus:outline-none focus:border-blue-700 w-full'
+                                type='date'
+                                id='startTime'
+                                {...register("startTime", { required: "Start Time is required" })}
+                            />
+                            {errors.startTime && <p className="text-red-500 text-sm mt-1">{errors.startTime.message}</p>}
+                        </div>
+                        <div className='flex flex-col flex-1'>
+                            <label htmlFor='endTime' className='mb-1 font-medium'>End Time</label>
+                            <input
+                                className='rounded-md py-2 px-3 border border-gray-300 focus:outline-none focus:border-blue-700 w-full'
+                                type='date'
+                                id='endTime'
+                                {...register("endTime", { required: "End time is required" })}
+                            />
+                            {errors.endTime && <p className="text-red-500 text-sm mt-1">{errors.endTime.message}</p>}
+                        </div>
+                    </div>
+                    <div className='flex w-full gap-4'>
+                        <div className='flex flex-col flex-1'>
+                            <label htmlFor='numberOfDays' className='mb-1 font-medium'>Number of Days</label>
+                            <input
+                                className='rounded-md py-2 px-3 border border-gray-300 focus:outline-none focus:border-blue-700 w-full'
+                                type='number'
+                                placeholder='ex. 4'
+                                id='numberOfDays'
+                                {...register("numberOfDays", { required: "Number of days is required" })}
+                            />
+                            {errors.numberOfDays && <p className="text-red-500 text-sm mt-1">{errors.numberOfDays.message}</p>}
+                        </div>
+                        <div className='flex flex-col flex-1'>
+                            <label htmlFor='city' className='mb-1 font-medium'>City</label>
+                            <input
+                                className='rounded-md py-2 px-3 border border-gray-300 focus:outline-none focus:border-blue-700 w-full'
+                                type='text'
+                                placeholder='ex. Surat'
+                                id='city'
+                                {...register("city", { required: "City is required" })}
+                            />
+                            {errors.city && <p className="text-red-500 text-sm mt-1">{errors.city.message}</p>}
+                        </div>
+                    </div>
+                    <div className='flex w-full gap-4'>
+                        <div className='flex flex-col flex-1'>
+                            <label htmlFor='location' className='mb-1 font-medium'>Location</label>
+                            <input
+                                className='rounded-md py-2 px-3 border border-gray-300 focus:outline-none focus:border-blue-700 w-full'
+                                type='text'
+                                id='location'
+                                placeholder='ex. Royal Palace Lawn'
+                                {...register("location", { required: "Location is required" })}
+                            />
+                            {errors.location && <p className="text-red-500 text-sm mt-1">{errors.location.message}</p>}
+                        </div>
+                    </div>
                 </div>
 
                 <div className='flex items-center gap-3 mt-6'>

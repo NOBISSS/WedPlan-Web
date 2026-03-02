@@ -114,7 +114,7 @@ function GuestsContent() {
             </CardHeader>
             <CardContent>
               <form onSubmit={handleAddGuest} className="space-y-4">
-                <div className="grid gap-5 md:grid-cols-2 ">
+                <div className="grid gap-5 md:grid-cols-2">
                   <div className="space-y-2">
                     <Label htmlFor="name">Guest Name</Label>
                     <Input
