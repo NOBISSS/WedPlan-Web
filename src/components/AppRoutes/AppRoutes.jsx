@@ -20,6 +20,7 @@ import {VenueDetail} from "../../pages/dashboard/venue/VenueDetail"
 import ForgotPassword from "@/pages/ForgotPassword"
 import RoleSelectionPage from "@/pages/RoleSelection"
 import SetVenueProfile from "@/pages/dashboard/venue/SetVenueProfile"
+import SetVendorProfile from "@/pages/dashboard/venue/setVendorProfile"
 
 export default function AppRoutes() {
   return (
@@ -33,6 +34,7 @@ export default function AppRoutes() {
         <Route path="/events" element={<Events />} />
         <Route path="/select-role" element={<RoleSelectionPage />} />
         <Route path="/set-venue-profile" element={<SetVenueProfile />} />
+        <Route path="/set-vendor-profile" element={<SetVendorProfile />} />
         <Route path="/admin" element={<Admin />} />
 
         {/* Dashboard routes — DashboardLayout wraps all children via <Outlet /> */}
