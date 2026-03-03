@@ -1,5 +1,5 @@
 import { categories } from "@/constants/constant";
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, current } from "@reduxjs/toolkit";
 import { fetchEvents } from "../thunks/eventThunk";
 
 const initialState = {
@@ -21,9 +21,10 @@ const eventSlice = createSlice({
                 state.error = null;
             })
             .addCase(fetchEvents.fulfilled, (state, action) => {
+                console.log("LOADING FALSE DONE",action.payload);
                 state.loading = false;
                 state.events = action.payload;
-                state.subEvents = action.payload.flatMap((event) => event.subEvents || []);
+                state.subEvents = action.payload.flatMap(event => event.subEvents || []);
             })
             .addCase(fetchEvents.rejected, (state, action) => {
                 state.loading = false;

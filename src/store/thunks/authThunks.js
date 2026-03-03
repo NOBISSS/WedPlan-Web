@@ -2,7 +2,6 @@ import { BASE_URL, headers } from "@/constants/constant";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-
 //REGISTER STEP 1
 export const registerWithOTP = createAsyncThunk(
     "auth/registerWithOTP",
@@ -53,13 +52,16 @@ export const verifyLoginOTP = createAsyncThunk(
     });
 
 
+
+
 //login with password
 export const loginWithPassword = createAsyncThunk(
     "auth/loginWithPassword",
     async (data, { rejectWithValue }) => {
         try {
-            const res = await axios.post(`${BASE_URL}/auth/loginwithpassword`, data);
+            const res = await axios.post(`${BASE_URL}/auth/loginwithpassword`, {contactNoOREmail: data.email, password: data.password}, headers(null));
             localStorage.setItem("token", res.data.token);
+            data.navigate("/dashboard");
             return res.data;
         } catch (error) {
             return rejectWithValue(error.response.data.message || "Failed to login");

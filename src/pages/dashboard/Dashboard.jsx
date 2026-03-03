@@ -4,10 +4,8 @@ import {
 } from "lucide-react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Link } from "react-router-dom"
-import { useDispatch, useSelector } from "react-redux"
-import { useEffect, useState } from "react"
-import { fetchEvents } from "@/store/thunks/eventThunk"
-import { fetchCategory } from "@/store/thunks/eventCategoryThunk"
+import {  useSelector } from "react-redux"
+import {  useState } from "react"
 
 const dashboardCards = [
   { icon: Calendar, title: "View Events", description: "Manage your wedding events", href: "/dashboard/events", color: "bg-blue-500", light: "bg-blue-50", text: "text-blue-600" },
@@ -27,7 +25,7 @@ const stats = [
 ]
 
 const EVENT_ICONS = {
-  wedding: "💍",
+  Wedding: "💍",
   reception: "🥂",
   engagement: "💌",
   mehndi: "🌿",
@@ -48,7 +46,7 @@ export default function DashboardPage() {
     <div className="space-y-8">
 
       {/* ── Hero Welcome Banner ── */}
-      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-blue-600 via-blue-500 to-blue-400 p-6 md:p-8 text-white">
+      <div className="relative overflow-hidden rounded-2xl bg-linear-to-br from-blue-600 via-blue-500 to-blue-400 p-6 md:p-8 text-white">
         {/* decorative circles */}
         <div className="absolute -top-8 -right-8 w-48 h-48 rounded-full bg-white/10" />
         <div className="absolute -bottom-10 -right-4 w-32 h-32 rounded-full bg-white/5" />
@@ -89,9 +87,9 @@ export default function DashboardPage() {
         <h1 className="text-2xl font-bold text-foreground">Events</h1>
         <div className="flex">
         {events.map((event) => (
-          <div key={event._id} className={`${selectedEvent === event._id ? "text-white bg-blue-500 border-blue-300" : "bg-white border-blue-100"} flex items-center gap-1.5 px-3 py-1.5 border rounded-lg cursor-pointer hover:bg-blue-50 transition-colors`} onClick={() => setSelectedEvent(event._id)}>
-            <span className="text-sm">{EVENT_ICONS[event.id] ?? "🎉"}</span>
-            <span className="text-sm font-medium text-foreground">{event?.title || "Wedding Celebration"}</span>
+          <div key={event._id} className={`${selectedEvent === event._id ? "text-white bg-blue-500 border-blue-300" : "bg-white border-blue-100"} flex items-center gap-1.5 px-3 py-1.5 border rounded-lg cursor-pointer transition-colors duration-75`} onClick={() => setSelectedEvent(event._id)}>
+            <span className="text-sm">{EVENT_ICONS[event.title] ?? "🎉"}</span>
+            <span className="text-sm font-medium">{event?.title || "Wedding Celebration"}</span>
           </div>
         ))}
         </div>

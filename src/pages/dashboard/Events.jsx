@@ -28,9 +28,16 @@ export default function EventsPage() {
     <div className="space-y-6">
 
       {/* ── Page Header ── */}
-      <div>
+      <div className="flex justify-between">
+        <div className="">
         <h1 className="text-2xl md:text-3xl font-bold text-foreground">Select Events</h1>
         <p className="text-muted-foreground mt-1">Choose the events you want to plan for your wedding</p>
+        </div>
+        <div className="">
+          <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+           + Create Event
+          </button>
+        </div>
       </div>
 
       {loading ? (
