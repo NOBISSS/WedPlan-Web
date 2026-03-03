@@ -10,7 +10,7 @@ export function VenueHeader({ venue, details }) {
             <h1 className="text-2xl md:text-3xl font-bold text-foreground">
               {venue?.name}
             </h1>
-            {venue.isVerified && (
+            {venue && venue.isVerified && (
               <BadgeCheck className="h-6 w-6 text-primary fill-primary/20" />
             )}
           </div>

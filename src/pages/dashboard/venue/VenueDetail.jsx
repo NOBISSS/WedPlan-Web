@@ -10,7 +10,6 @@ import { MenuGallery } from "./venue-card/menu-gallery";
 import { DocumentsCard } from "./venue-card/documents-card";
 import { ArrowLeft, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { categories } from "@/constants/constant";
 import { fetchSelectedVenue } from "@/store/thunks/venueThunks";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -21,7 +20,8 @@ export const VenueDetail = () => {
   const [bookVenueModalOpen, setBookVenueModalOpen] = useState(false);
   const {currentSelectedVenue,loading} = useSelector((state) => state.venue || {});
   const venue=currentSelectedVenue;
-  
+  const categories = useSelector((state) => state.eventCategory.categories) || [];
+
   const details = venue?.details;
   const venueId = useParams().id;
   const operations = venue?.operations;
@@ -59,7 +59,7 @@ export const VenueDetail = () => {
             {/* Left Column - Main Content */}
             <div className="lg:col-span-2 space-y-6">
               {/* Image Gallery */}
-              <ImageGallery images={details?.images} venueName={venue.name} />
+              <ImageGallery images={details?.images} venueName={venue?.name} />
 
               {/* Venue Header */}
               <VenueHeader venue={venue} details={details} />

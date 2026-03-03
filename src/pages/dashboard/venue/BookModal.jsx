@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useForm } from 'react-hook-form';
+import { createEvent } from '@/store/thunks/eventThunk';
 
 // ─── Reusable Step Indicator ──────────────────────────────────────────
 const StepIndicator = ({ currentStep, totalSteps }) => {
@@ -86,8 +87,8 @@ const StepOne = ({ setBookVenueModalOpen, eventCategory, setStep, savedData, onS
                             >
                                 <option value="">Select an event category</option>
                                 {eventCategory.length > 0 && eventCategory.map((category) => (
-                                    <option key={category.id} value={category.id}>
-                                        {category}
+                                    <option key={category._id} value={category._id}>
+                                        {category.title}
                                     </option>
                                 ))}
                             </select>
@@ -97,7 +98,7 @@ const StepOne = ({ setBookVenueModalOpen, eventCategory, setStep, savedData, onS
                             <label htmlFor='totalBudget' className='mb-1 font-medium'>Budget</label>
                             <input
                                 className='rounded-md py-2 px-3 border border-gray-300 focus:outline-none focus:border-blue-700 w-full'
-                                type='text'
+                                type='number'
                                 id='totalBudget'
                                 name='totalBudget'
                                 placeholder='Enter budget of Event'
@@ -130,7 +131,32 @@ const StepOne = ({ setBookVenueModalOpen, eventCategory, setStep, savedData, onS
                             {errors.endDate && <p className="text-red-500 text-sm mt-1">{errors.endDate.message}</p>}
                         </div>
                     </div>
+                    
+                    <div className='flex w-full gap-4'>
+                        <div className='flex flex-col flex-1'>
+                            <label htmlFor='brideName' className='mb-1 font-medium'>Bride Name</label>
+                            <input
+                                className='rounded-md py-2 px-3 border border-gray-300 focus:outline-none focus:border-blue-700 w-full'
+                                type='text'
+                                id='brideName'
+                                placeholder='Enter bride name'
 
+                                {...register("brideName", { required: "Bride name is required" })}
+                            />
+                            {errors.brideName && <p className="text-red-500 text-sm mt-1">{errors.brideName.message}</p>}
+                        </div>
+                        <div className='flex flex-col flex-1'>
+                            <label htmlFor='groomName' className='mb-1 font-medium'>Groom Name</label>
+                            <input
+                                className='rounded-md py-2 px-3 border border-gray-300 focus:outline-none focus:border-blue-700 w-full'
+                                type='text'
+                                id='groomName'
+                                placeholder='Enter groom name'
+                                {...register("groomName", { required: "Groom name is required" })}
+                            />
+                            {errors.groomName && <p className="text-red-500 text-sm mt-1">{errors.groomName.message}</p>}
+                        </div>
+                    </div>
                 </div>
 
                 {/* Buttons */}
@@ -166,7 +192,7 @@ const StepTwo = ({ setBookVenueModalOpen, setStep, savedData, onStepComplete, st
 
     return (
         <div className='flex flex-col h-full'>
-            <h1 className='text-2xl font-bold text-primary mb-6'>Booking Details</h1>
+            <h1 className='text-2xl font-bold text-primary mb-6'>Booking Details (Sub Event)</h1>
             {/* Step indicator */}
             {stepIndicator}
 
@@ -177,15 +203,15 @@ const StepTwo = ({ setBookVenueModalOpen, setStep, savedData, onStepComplete, st
                     {/* Row 1: Title & Description */}
                     <div className='flex w-full gap-4'>
                         <div className='flex flex-col flex-1'>
-                            <label htmlFor='title' className='mb-1 font-medium'>Title</label>
+                            <label htmlFor='name' className='mb-1 font-medium'>name</label>
                             <input
                                 className='rounded-md py-2 px-3 border border-gray-300 focus:outline-none focus:border-blue-700 w-full'
                                 type='text'
-                                id='title'
-                                placeholder='Enter title of Event'
-                                {...register("title", { required: "Title is required" })}
+                                id='name'
+                                placeholder='Enter name of Sub Event'
+                                {...register("name", { required: "Name is required" })}
                             />
-                            {errors.title && <p className="text-red-500 text-sm mt-1">{errors.title.message}</p>}
+                            {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>}
                         </div>
                         <div className='flex flex-col flex-1'>
                             <label htmlFor='description' className='mb-1 font-medium'>Description</label>
@@ -324,7 +350,7 @@ const BookModal = ({ eventCategory, setBookVenueModalOpen }) => {
         type: "",
         startDate: "",
         endDate: "",
-        totalBudget: ""
+        totalBudget: 0
     })
 
     const handleStepComplete = (stepData) => {
@@ -334,6 +360,7 @@ const BookModal = ({ eventCategory, setBookVenueModalOpen }) => {
     const handleFinalSubmit = () => {
         // Here you can dispatch your final booking action with formData
         console.log("Final Booking Data:", formData);
+        dispatch(createEvent(formData));
         setBookVenueModalOpen(false);
     }
 
