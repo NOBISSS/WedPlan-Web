@@ -76,6 +76,9 @@ export default function RoleSelectionPage() {
     } else if (selected && selected === "vendor") {
       navigate("/set-vendor-profile");
     }
+    else if (selected && selected === "user") {
+        navigate("/set-user-profile");
+    }
   };
 
   return (
