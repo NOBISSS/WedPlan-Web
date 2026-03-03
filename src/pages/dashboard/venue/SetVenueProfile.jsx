@@ -215,7 +215,7 @@ export default function SetVenueProfile() {
   }
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 p-5">
       {/* Step Indicator */}
       <div className="bg-card rounded-xl border shadow-sm p-6">
         <StepIndicator steps={steps} currentStep={currentStep} />

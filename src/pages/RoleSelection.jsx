@@ -48,7 +48,7 @@ export default function RoleSelectionPage() {
   // }, [user?.role, navigate])
 
   const handleContinue = () => {
-    if (selected) {
+    if (selected && selected === "venue") {
       // selectRole(selected)
       navigate("/set-venue-profile")
     }
