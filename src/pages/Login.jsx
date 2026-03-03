@@ -45,7 +45,7 @@ export default function LoginPage() {
     e.preventDefault()
     dispatch(loginWithPassword({ email, password,navigate }))
     if (localStorage.getItem("token")) {
-      //navigate("/dashboard")
+      navigate("/dashboard")
     }
   }
 
@@ -61,13 +61,12 @@ export default function LoginPage() {
 
   useEffect(() => {
     if (localStorage.getItem("token")?.length > 0) {
-   //   navigate("/dashboard")
+     navigate("/dashboard")
     }
   }, [])
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
-
       {/* Header */}
       <header className="p-4 border-b border-border">
         <Link to="/" className="flex items-center gap-2 w-fit">

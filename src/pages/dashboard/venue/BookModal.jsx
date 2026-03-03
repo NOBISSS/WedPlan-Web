@@ -29,6 +29,7 @@ const StepIndicator = ({ currentStep, totalSteps }) => {
     )
 }
 
+
 const StepOne = ({ setBookVenueModalOpen, eventCategory, setStep, savedData, onStepComplete, stepIndicator }) => {
     const { register, handleSubmit, formState: { errors } } = useForm({
         defaultValues: savedData

@@ -6,6 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Link } from "react-router-dom"
 import {  useSelector } from "react-redux"
 import {  useState } from "react"
+import { getColor } from "@/utils/getColor"
 
 const dashboardCards = [
   { icon: Calendar, title: "View Events", description: "Manage your wedding events", href: "/dashboard/events", color: "bg-blue-500", light: "bg-blue-50", text: "text-blue-600" },
@@ -39,7 +40,9 @@ const activities = [
   { action: "Sent 50 invitations", time: "3 days ago", icon: Mail, color: "bg-pink-100 text-pink-600" },
 ]
 
+
 export default function DashboardPage() {
+  
   const {events,loading} = useSelector((state) => state.event);
   const [selectedEvent, setSelectedEvent] = useState(events.length > 0 ? events[0]._id : null);  
   return (
@@ -90,6 +93,7 @@ export default function DashboardPage() {
           <div key={event._id} className={`${selectedEvent === event._id ? "text-white bg-blue-500 border-blue-300" : "bg-white border-blue-100"} flex items-center gap-1.5 px-3 py-1.5 border rounded-lg cursor-pointer transition-colors duration-75`} onClick={() => setSelectedEvent(event._id)}>
             <span className="text-sm">{EVENT_ICONS[event.title] ?? "🎉"}</span>
             <span className="text-sm font-medium">{event?.title || "Wedding Celebration"}</span>
+            <span className={`${getColor(event.status)}  text-xs px-2 py-0.5 rounded-full ${selectedEvent === event._id ? "bg-white text-blue-700 border border-blue-300" : "text-white"}`}>{event.status}</span>
           </div>
         ))}
         </div>
