@@ -97,7 +97,7 @@ export default function DashboardPage() {
         </div>
       </div>
       {/* ── Stats Grid ── */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-5">
         {stats.map((stat, i) => (
           <Card key={i} className={`border ${stat.border} hover:shadow-md transition-shadow`}>
             <CardContent className="p-4">
@@ -116,7 +116,7 @@ export default function DashboardPage() {
       </div>
 
       {/* ── Quick Actions + Activity side by side on large screens ── */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-10">
 
         {/* Quick Actions — takes 2/3 width */}
         <div className="lg:col-span-2 space-y-4">

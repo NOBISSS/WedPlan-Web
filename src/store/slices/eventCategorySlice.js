@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-
 import { fetchCategory } from "../thunks/eventCategoryThunk";
 
 const eventCategorySlice = createSlice({

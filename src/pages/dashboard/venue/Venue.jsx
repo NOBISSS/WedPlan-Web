@@ -76,7 +76,8 @@ export default function VenuePage() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    dispatch(fetchVenues());
+    if(venues.length === 0)
+      dispatch(fetchVenues());
   }, [])
 
   return (

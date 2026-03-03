@@ -1,10 +1,9 @@
-import { useEffect, useState } from "react"
+import {  useState } from "react"
 import { Heart, ArrowRight, Check, Loader2, Sparkles } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Link } from "react-router-dom"
-import { useDispatch, useSelector } from "react-redux"
-import { fetchEvents } from "@/store/thunks/eventThunk"
+import {  useSelector } from "react-redux"
 
 const EVENT_ICONS = {
   Wedding: "💍",
@@ -14,30 +13,16 @@ const EVENT_ICONS = {
   sangeet: "🎶",
 }
 
-const eventTypes = [
-  { id: "wedding",    title: "Wedding Ceremony",  description: "Traditional wedding ceremony with all rituals" },
-  { id: "reception",  title: "Wedding Reception",  description: "Grand reception party for all guests" },
-  { id: "engagement", title: "Engagement Party",   description: "Intimate engagement celebration" },
-  { id: "mehndi",     title: "Mehndi Ceremony",    description: "Traditional henna ceremony" },
-  { id: "sangeet",    title: "Sangeet Night",       description: "Musical evening with dance performances" },
-]
-
 export default function EventsPage() {
 
-  const [selectedEvents, setSelectedEvents] = useState(["wedding"])
-  const dispatch = useDispatch()
-  const { events } = useSelector((state) => state.event)
+  const [selectedEvents, setSelectedEvents] = useState([]);
   const {categories,loading}=useSelector((state) => state.eventCategory);
-  
+
   const toggleEvent = (eventId) => {
     setSelectedEvents((prev) =>
       prev.includes(eventId) ? prev.filter((id) => id !== eventId) : [...prev, eventId]
     )
   }
-
-  useEffect(() => {
-    dispatch(fetchEvents())
-  }, [dispatch])
 
   return (
     <div className="space-y-6">
@@ -56,27 +41,6 @@ export default function EventsPage() {
         <div className="space-y-6">
 
           {/* ── API Events Strip (from backend) ── */}
-          {events && events.length > 0 && (
-            <Card className="border-blue-100 bg-blue-50/50">
-              <CardContent className="p-4">
-                <div className="flex items-center gap-2 mb-3">
-                  <Heart className="h-4 w-4 text-blue-600" />
-                  <span className="text-sm font-medium text-foreground">Your Wedding Events</span>
-                  <span className="px-2 py-0.5 bg-blue-100 text-blue-700 rounded-full text-xs font-medium">
-                    {events.length} available
-                  </span>
-                </div>
-                <div className="flex flex-wrap gap-2">
-                  {events.map((event) => (
-                    <div key={event._id} className="flex items-center gap-1.5 px-3 py-1.5 bg-white border border-blue-100 rounded-lg">
-                      <span className="text-sm">{EVENT_ICONS[event?.title] ?? "🎉"}</span>
-                      <span className="text-sm font-medium text-foreground">{event?.title || "Wedding Celebration"}</span>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          )}
 
           {/* ── Selectable Event Cards ── */}
           <div>
@@ -84,13 +48,13 @@ export default function EventsPage() {
               <Sparkles className="h-4 w-4 text-blue-600" />
               <h2 className="text-lg font-semibold text-foreground">Plan Your Events</h2>
               <span className="px-2 py-0.5 bg-primary/10 text-primary rounded-full text-xs font-medium">
-                {selectedEvents.length} selected
+                {selectedEvents?.length || 0} selected
               </span>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {categories && categories.map((event) => {
-                const isSelected = selectedEvents.includes(event._id)
+                const isSelected = selectedEvents && selectedEvents?.includes(event._id)
                 return (
                   <Card
                     key={event._id}
@@ -108,7 +72,7 @@ export default function EventsPage() {
                     <CardContent className="p-5">
                       <div className="flex items-start justify-between mb-4">
                         <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center text-2xl">
-                          {EVENT_ICONS[event.id]}
+                          {EVENT_ICONS[event.title ?? "Event"] ?? "🎉"}
                         </div>
                         <div
                           className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all ${
@@ -133,19 +97,19 @@ export default function EventsPage() {
           <Card>
             <CardHeader>
               <CardTitle>Selected Events Summary</CardTitle>
-              <CardDescription>You have selected {selectedEvents.length} event(s)</CardDescription>
+              <CardDescription>You have selected {selectedEvents?.length || 0} event(s)</CardDescription>
             </CardHeader>
             <CardContent>
-              {selectedEvents.length > 0 ? (
+              {selectedEvents && selectedEvents.length > 0 ? (
                 <div className="flex flex-wrap gap-2 mb-6">
-                  {selectedEvents.map((eventId) => {
-                    const event = eventTypes.find((e) => e.id === eventId)
+                  {selectedEvents && selectedEvents.map((eventId) => {
+                    const event = categories.find((e) => e._id === eventId)
                     return (
                       <span
                         key={eventId}
                         className="flex items-center gap-1.5 px-3 py-1 bg-primary/10 text-primary rounded-full text-sm font-medium"
                       >
-                        {EVENT_ICONS[eventId]} {event?.title}
+                        {EVENT_ICONS[event?.title] ?? "🎉"} {event?.title}
                       </span>
                     )
                   })}
@@ -156,7 +120,7 @@ export default function EventsPage() {
                 </p>
               )}
 
-              <Button asChild disabled={selectedEvents.length === 0}>
+              <Button asChild disabled={selectedEvents?.length === 0}>
                 <Link to="/dashboard/venue">
                   Continue to Venue Selection
                   <ArrowRight className="ml-2 h-4 w-4" />
