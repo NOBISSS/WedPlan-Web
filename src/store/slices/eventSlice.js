@@ -5,6 +5,7 @@ import { fetchEvents } from "../thunks/eventThunk";
 const initialState = {
     eventCategory: null,
     events: [],
+    subEvents:[],
     selectedEvents: [],
     loading: false,
     error: null
@@ -22,6 +23,7 @@ const eventSlice = createSlice({
             .addCase(fetchEvents.fulfilled, (state, action) => {
                 state.loading = false;
                 state.events = action.payload;
+                state.subEvents = action.payload.flatMap((event) => event.subEvents || []);
             })
             .addCase(fetchEvents.rejected, (state, action) => {
                 state.loading = false;

@@ -4,32 +4,42 @@ import {
 } from "lucide-react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Link } from "react-router-dom"
+import { useSelector } from "react-redux"
 
 const dashboardCards = [
-  { icon: Calendar,   title: "View Events",      description: "Manage your wedding events",   href: "/dashboard/events",       color: "bg-blue-500",    light: "bg-blue-50",   text: "text-blue-600" },
-  { icon: MapPin,     title: "Choose Venue",     description: "Browse and select venues",     href: "/dashboard/venue",        color: "bg-emerald-500", light: "bg-emerald-50",text: "text-emerald-600" },
-  { icon: Users,      title: "Guest List",       description: "Manage your guest list",       href: "/dashboard/guests",       color: "bg-orange-500",  light: "bg-orange-50", text: "text-orange-600" },
-  { icon: Mail,       title: "Invitations",      description: "Send digital invitations",     href: "/dashboard/invitations",  color: "bg-pink-500",    light: "bg-pink-50",   text: "text-pink-600" },
-  { icon: Store,      title: "Vendors",          description: "Find and book vendors",        href: "/dashboard/vendors",      color: "bg-indigo-500",  light: "bg-indigo-50", text: "text-indigo-600" },
-  { icon: ImageIcon,  title: "Post Wedding",     description: "Upload and share photos",      href: "/dashboard/post-wedding", color: "bg-cyan-500",    light: "bg-cyan-50",   text: "text-cyan-600" },
-  { icon: Star,       title: "Reviews & Ratings",description: "Rate your vendors",            href: "/dashboard/reviews",      color: "bg-amber-500",   light: "bg-amber-50",  text: "text-amber-600" },
+  { icon: Calendar, title: "View Events", description: "Manage your wedding events", href: "/dashboard/events", color: "bg-blue-500", light: "bg-blue-50", text: "text-blue-600" },
+  { icon: MapPin, title: "Choose Venue", description: "Browse and select venues", href: "/dashboard/venue", color: "bg-emerald-500", light: "bg-emerald-50", text: "text-emerald-600" },
+  { icon: Users, title: "Guest List", description: "Manage your guest list", href: "/dashboard/guests", color: "bg-orange-500", light: "bg-orange-50", text: "text-orange-600" },
+  { icon: Mail, title: "Invitations", description: "Send digital invitations", href: "/dashboard/invitations", color: "bg-pink-500", light: "bg-pink-50", text: "text-pink-600" },
+  { icon: Store, title: "Vendors", description: "Find and book vendors", href: "/dashboard/vendors", color: "bg-indigo-500", light: "bg-indigo-50", text: "text-indigo-600" },
+  { icon: ImageIcon, title: "Post Wedding", description: "Upload and share photos", href: "/dashboard/post-wedding", color: "bg-cyan-500", light: "bg-cyan-50", text: "text-cyan-600" },
+  { icon: Star, title: "Reviews & Ratings", description: "Rate your vendors", href: "/dashboard/reviews", color: "bg-amber-500", light: "bg-amber-50", text: "text-amber-600" },
 ]
 
 const stats = [
-  { label: "Days Left",   value: "45",   icon: Clock,         color: "text-blue-600",    bg: "bg-blue-50",    border: "border-blue-100",  trend: "Until your big day" },
-  { label: "Guests",      value: "150",  icon: Users,         color: "text-emerald-600", bg: "bg-emerald-50", border: "border-emerald-100",trend: "+12 this week" },
-  { label: "Vendors",     value: "8",    icon: Store,         color: "text-indigo-600",  bg: "bg-indigo-50",  border: "border-indigo-100", trend: "3 pending confirm" },
-  { label: "Tasks Done",  value: "12/20",icon: CheckCircle2,  color: "text-orange-600",  bg: "bg-orange-50",  border: "border-orange-100", trend: "60% complete" },
+  { label: "Days Left", value: "45", icon: Clock, color: "text-blue-600", bg: "bg-blue-50", border: "border-blue-100", trend: "Until your big day" },
+  { label: "Guests", value: "150", icon: Users, color: "text-emerald-600", bg: "bg-emerald-50", border: "border-emerald-100", trend: "+12 this week" },
+  { label: "Vendors", value: "8", icon: Store, color: "text-indigo-600", bg: "bg-indigo-50", border: "border-indigo-100", trend: "3 pending confirm" },
+  { label: "Tasks Done", value: "12/20", icon: CheckCircle2, color: "text-orange-600", bg: "bg-orange-50", border: "border-orange-100", trend: "60% complete" },
 ]
 
+const EVENT_ICONS = {
+  wedding: "💍",
+  reception: "🥂",
+  engagement: "💌",
+  mehndi: "🌿",
+  sangeet: "🎶",
+}
+
 const activities = [
-  { action: "Added 5 guests to the list",  time: "2 hours ago",  icon: Users,    color: "bg-emerald-100 text-emerald-600" },
-  { action: "Booked Grand Palace venue",   time: "1 day ago",    icon: MapPin,   color: "bg-blue-100 text-blue-600" },
-  { action: "Confirmed photographer",      time: "2 days ago",   icon: Star,     color: "bg-amber-100 text-amber-600" },
-  { action: "Sent 50 invitations",         time: "3 days ago",   icon: Mail,     color: "bg-pink-100 text-pink-600" },
+  { action: "Added 5 guests to the list", time: "2 hours ago", icon: Users, color: "bg-emerald-100 text-emerald-600" },
+  { action: "Booked Grand Palace venue", time: "1 day ago", icon: MapPin, color: "bg-blue-100 text-blue-600" },
+  { action: "Confirmed photographer", time: "2 days ago", icon: Star, color: "bg-amber-100 text-amber-600" },
+  { action: "Sent 50 invitations", time: "3 days ago", icon: Mail, color: "bg-pink-100 text-pink-600" },
 ]
 
 export default function DashboardPage() {
+  const {events,loading} = useSelector((state) => state.event);
   return (
     <div className="space-y-8">
 
@@ -70,7 +80,17 @@ export default function DashboardPage() {
           </div>
         </div>
       </div>
-
+      <div className="flex flex-col items-start">
+        <h1 className="text-2xl font-bold text-foreground">Events</h1>
+        <div className="flex">
+        {events.map((event) => (
+          <div key={event.id} className="flex items-center gap-1.5 px-3 py-1.5 bg-white border border-blue-100 rounded-lg">
+            <span className="text-sm">{EVENT_ICONS[event.id] ?? "🎉"}</span>
+            <span className="text-sm font-medium text-foreground">{event?.title || "Wedding Celebration"}</span>
+          </div>
+        ))}
+        </div>
+      </div>
       {/* ── Stats Grid ── */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {stats.map((stat, i) => (
