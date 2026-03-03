@@ -2,12 +2,13 @@
 
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
-import { ChevronLeft, ChevronRight, Save, Send } from "lucide-react"
+import { ChevronLeft, ChevronRight, Save, Send, X } from "lucide-react"
 import { StepBasicInfo } from "@/components/set-venue-forms/step-basic-info"
 import { StepLocationContact } from "@/components/set-venue-forms/step-location-contact"
 import { StepCapacity } from "@/components/set-venue-forms/step-capacity"
 import { StepFacilities } from "@/components/set-venue-forms/step-facilities"
 import { StepIndicator } from "@/components/set-venue-forms/step-indicator"
+import { useNavigate } from "react-router-dom"
 
 const steps = [
   { id: 1, title: "Basic Info", description: "Venue details" },
@@ -99,7 +100,7 @@ export default function SetVenueProfile() {
   const [formData, setFormData] = useState(initialFormData)
   const [errors, setErrors] = useState({})
   const [isSubmitting, setIsSubmitting] = useState(false)
-
+  const navigate = useNavigate()
   const validateStep = (step) => {
     const newErrors = {}
 
@@ -175,6 +176,20 @@ export default function SetVenueProfile() {
     alert("Venue submitted successfully!")
     setIsSubmitting(false)
   }
+  const handleCancel = () => {
+    if (
+      confirm(
+        "Are you sure you want to cancel? All unsaved changes will be lost.",
+      )
+    ) {
+      setFormData(initialFormData);
+      setCurrentStep(1);
+      // setCompletedSteps([]);
+      // setIsDraft(false);
+      setErrors({});
+      navigate("/select-role");
+    }
+  };
 
   const renderStep = () => {
     switch (currentStep) {
@@ -215,7 +230,7 @@ export default function SetVenueProfile() {
   }
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 p-5">
       {/* Step Indicator */}
       <div className="bg-card rounded-xl border shadow-sm p-6">
         <StepIndicator steps={steps} currentStep={currentStep} />
@@ -226,15 +241,25 @@ export default function SetVenueProfile() {
 
       {/* Action Buttons */}
       <div className="flex flex-col sm:flex-row items-center justify-between gap-4 bg-card rounded-xl border shadow-sm p-6">
-        <Button
-          variant="outline"
-          onClick={handleBack}
-          disabled={currentStep === 1}
-          className="w-full sm:w-auto bg-transparent"
-        >
-          <ChevronLeft className="h-4 w-4 mr-2" />
-          Back
-        </Button>
+        {currentStep === 1 ? (
+          <Button
+            variant="outline"
+            onClick={handleCancel}
+            className="w-full sm:w-auto bg-transparent"
+          >
+            <X className="h-4 w-4 mr-2" />
+            Cancel
+          </Button>
+        ) : (
+          <Button
+            variant="outline"
+            onClick={handleBack}
+            className="w-full sm:w-auto bg-transparent"
+          >
+            <ChevronLeft className="h-4 w-4 mr-2" />
+            Back
+          </Button>
+        )}
 
         <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
           <Button
@@ -273,5 +298,5 @@ export default function SetVenueProfile() {
         </div>
       </div>
     </div>
-  )
+  );
 }
