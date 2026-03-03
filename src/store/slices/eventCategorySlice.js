@@ -2,7 +2,6 @@ import { createSlice } from "@reduxjs/toolkit";
 
 import { fetchCategory } from "../thunks/eventCategoryThunk";
 
-
 const eventCategorySlice = createSlice({
     name: "eventCategory",
     initialState: {
@@ -23,7 +22,8 @@ const eventCategorySlice = createSlice({
             state.loading = false;
             state.error = action.payload;
         });
-    }
+    },
+    reducers:{},
 })
 
 

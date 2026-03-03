@@ -4,7 +4,10 @@ import {
 } from "lucide-react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Link } from "react-router-dom"
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
+import { useEffect, useState } from "react"
+import { fetchEvents } from "@/store/thunks/eventThunk"
+import { fetchCategory } from "@/store/thunks/eventCategoryThunk"
 
 const dashboardCards = [
   { icon: Calendar, title: "View Events", description: "Manage your wedding events", href: "/dashboard/events", color: "bg-blue-500", light: "bg-blue-50", text: "text-blue-600" },
@@ -40,6 +43,7 @@ const activities = [
 
 export default function DashboardPage() {
   const {events,loading} = useSelector((state) => state.event);
+  const [selectedEvent, setSelectedEvent] = useState(events.length > 0 ? events[0]._id : null);  
   return (
     <div className="space-y-8">
 
@@ -80,11 +84,12 @@ export default function DashboardPage() {
           </div>
         </div>
       </div>
+      { loading ? (<div className="flex items-center justify-center h-32"><Clock className="h-6 w-6 animate-spin text-blue-600" /></div>) :  (<div className="p-4">
       <div className="flex flex-col items-start">
         <h1 className="text-2xl font-bold text-foreground">Events</h1>
         <div className="flex">
         {events.map((event) => (
-          <div key={event.id} className="flex items-center gap-1.5 px-3 py-1.5 bg-white border border-blue-100 rounded-lg">
+          <div key={event._id} className={`${selectedEvent === event._id ? "text-white bg-blue-500 border-blue-300" : "bg-white border-blue-100"} flex items-center gap-1.5 px-3 py-1.5 border rounded-lg cursor-pointer hover:bg-blue-50 transition-colors`} onClick={() => setSelectedEvent(event._id)}>
             <span className="text-sm">{EVENT_ICONS[event.id] ?? "🎉"}</span>
             <span className="text-sm font-medium text-foreground">{event?.title || "Wedding Celebration"}</span>
           </div>
@@ -177,8 +182,8 @@ export default function DashboardPage() {
             </CardContent>
           </Card>
         </div>
-
       </div>
+      </div>)}
     </div>
   )
 }

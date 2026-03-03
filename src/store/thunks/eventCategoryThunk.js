@@ -6,9 +6,8 @@ export const fetchCategory = createAsyncThunk(
     "eventCategory/fetchCategory",
     async (_, { rejectWithValue }) => {
         try {
-            const res = await axios.get(`${BASE_URL}/eventcategory`, headers(null));
-            console.log("Categories fetched:", res.data);
-            return res.data;
+            const res = await axios.get(`${BASE_URL}/eventcategories/get`, headers(null));
+            return res.data.data.categories;
         } catch (error) {
             return rejectWithValue(error.response.data.message || "Failed to fetch categories");
         }

@@ -8,7 +8,6 @@ export const fetchEvents = createAsyncThunk(
     async (_, { rejectWithValue }) => {
         try{
             const res = await axios.get(`${BASE_URL}/event/getmy`, headers(localStorage.getItem("token")));
-            console.log("Events fetched:", res.data.events);
             return res.data.events;
         }catch(error){
                 return rejectWithValue(error.response.data.message || "Failed to fetch events");

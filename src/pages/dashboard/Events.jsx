@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { fetchEvents } from "@/store/thunks/eventThunk"
 
 const EVENT_ICONS = {
-  wedding: "💍",
+  Wedding: "💍",
   reception: "🥂",
   engagement: "💌",
   mehndi: "🌿",
@@ -23,10 +23,12 @@ const eventTypes = [
 ]
 
 export default function EventsPage() {
+
   const [selectedEvents, setSelectedEvents] = useState(["wedding"])
   const dispatch = useDispatch()
-  const { events, loading } = useSelector((state) => state.event)
-
+  const { events } = useSelector((state) => state.event)
+  const {categories,loading}=useSelector((state) => state.eventCategory);
+  
   const toggleEvent = (eventId) => {
     setSelectedEvents((prev) =>
       prev.includes(eventId) ? prev.filter((id) => id !== eventId) : [...prev, eventId]
@@ -66,8 +68,8 @@ export default function EventsPage() {
                 </div>
                 <div className="flex flex-wrap gap-2">
                   {events.map((event) => (
-                    <div key={event.id} className="flex items-center gap-1.5 px-3 py-1.5 bg-white border border-blue-100 rounded-lg">
-                      <span className="text-sm">{EVENT_ICONS[event.id] ?? "🎉"}</span>
+                    <div key={event._id} className="flex items-center gap-1.5 px-3 py-1.5 bg-white border border-blue-100 rounded-lg">
+                      <span className="text-sm">{EVENT_ICONS[event?.title] ?? "🎉"}</span>
                       <span className="text-sm font-medium text-foreground">{event?.title || "Wedding Celebration"}</span>
                     </div>
                   ))}
@@ -87,21 +89,21 @@ export default function EventsPage() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {eventTypes.map((event) => {
-                const isSelected = selectedEvents.includes(event.id)
+              {categories && categories.map((event) => {
+                const isSelected = selectedEvents.includes(event._id)
                 return (
                   <Card
-                    key={event.id}
+                    key={event._id}
                     className={`cursor-pointer transition-all select-none ${
                       isSelected
                         ? "ring-2 ring-blue-500 border-blue-500 bg-blue-50/40"
                         : "hover:shadow-md hover:border-blue-200"
                     }`}
-                    onClick={() => toggleEvent(event.id)}
+                    onClick={() => toggleEvent(event._id)}
                     role="checkbox"
                     aria-checked={isSelected}
                     tabIndex={0}
-                    onKeyDown={(e) => e.key === "Enter" && toggleEvent(event.id)}
+                    onKeyDown={(e) => e.key === "Enter" && toggleEvent(event._id)}
                   >
                     <CardContent className="p-5">
                       <div className="flex items-start justify-between mb-4">

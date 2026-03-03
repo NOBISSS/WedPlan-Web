@@ -1,6 +1,10 @@
 import { Calendar, MapPin, Users, Mail, Store, ImageIcon, Star, LayoutDashboard, LogOut, Heart, X } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Link, useLocation } from "react-router-dom"
+import { useEffect } from "react"
+import { fetchEvents } from "@/store/thunks/eventThunk"
+import { fetchCategory } from "@/store/thunks/eventCategoryThunk"
+import { useDispatch } from "react-redux"
 const menuItems = [
   { icon: LayoutDashboard, label: "Dashboard", href: "/dashboard" },
   { icon: Calendar, label: "Events", href: "/dashboard/events" },
@@ -14,7 +18,11 @@ const menuItems = [
 
 export function DashboardSidebar({ isOpen, onClose }) {
   const {pathname} = useLocation()
-
+  const dispatch=useDispatch();
+  useEffect(()=>{
+      dispatch(fetchEvents());
+      dispatch(fetchCategory());
+    },[])
   return (
     <>
       {/* Overlay for mobile */}
