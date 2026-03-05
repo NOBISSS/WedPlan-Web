@@ -3,9 +3,9 @@ import {
   Star, ArrowRight, Clock, CheckCircle2, TrendingUp, Heart
 } from "lucide-react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Link } from "react-router-dom"
-import {  useSelector } from "react-redux"
-import {  useState } from "react"
+import { Link, useNavigate } from "react-router-dom"
+import { useSelector } from "react-redux"
+import { useState } from "react"
 import { getColor } from "@/utils/getColor"
 
 const dashboardCards = [
@@ -42,9 +42,9 @@ const activities = [
 
 
 export default function DashboardPage() {
-  
-  const {events,loading} = useSelector((state) => state.event);
-  const [selectedEvent, setSelectedEvent] = useState(events.length > 0 ? events[0]._id : null);  
+  const navigate = useNavigate();
+  const { events, loading } = useSelector((state) => state.event);
+  const [selectedEvent, setSelectedEvent] = useState(events.length > 0 ? events[0]._id : null);
   return (
     <div className="space-y-8">
 
@@ -85,106 +85,109 @@ export default function DashboardPage() {
           </div>
         </div>
       </div>
-      { loading ? (<div className="flex items-center justify-center h-32"><Clock className="h-6 w-6 animate-spin text-blue-600" /></div>) :  (<div className="p-4">
-      <div className="flex flex-col items-start">
-        <h1 className="text-2xl font-bold text-foreground">Events</h1>
-        <div className="flex">
-        {events.map((event) => (
-          <div key={event._id} className={`${selectedEvent === event._id ? "text-white bg-blue-500 border-blue-300" : "bg-white border-blue-100"} flex items-center gap-1.5 px-3 py-1.5 border rounded-lg cursor-pointer transition-colors duration-75`} onClick={() => setSelectedEvent(event._id)}>
-            <span className="text-sm">{EVENT_ICONS[event.title] ?? "🎉"}</span>
-            <span className="text-sm font-medium">{event?.title || "Wedding Celebration"}</span>
-            <span className={`${getColor(event.status)}  text-xs px-2 py-0.5 rounded-full ${selectedEvent === event._id ? "bg-white text-blue-700 border border-blue-300" : "text-white"}`}>{event.status}</span>
-          </div>
-        ))}
-        </div>
-      </div>
-      {/* ── Stats Grid ── */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-5">
-        {stats.map((stat, i) => (
-          <Card key={i} className={`border ${stat.border} hover:shadow-md transition-shadow`}>
-            <CardContent className="p-4">
-              <div className="flex items-start justify-between mb-3">
-                <div className={`w-9 h-9 ${stat.bg} ${stat.color} rounded-lg flex items-center justify-center`}>
-                  <stat.icon className="h-4 w-4" />
-                </div>
-                <TrendingUp className="h-3.5 w-3.5 text-muted-foreground/50" />
+      {loading ? (<div className="flex items-center justify-center h-32"><Clock className="h-6 w-6 animate-spin text-blue-600" /></div>) : (<div className="p-4">
+        <div className="flex flex-col items-start">
+          <h1 className="text-2xl font-bold text-foreground">Events</h1>
+          <div className="flex flex-wrap gap-1">
+            {events.map((event) => (
+              <div key={event._id} className={`${selectedEvent === event._id ? "text-white bg-blue-500 border-blue-300" : "bg-white border-blue-100"} flex items-center gap-1.5 px-3 py-1.5 border rounded-lg cursor-pointer transition-colors duration-75`} onClick={() => { 
+                setSelectedEvent(event._id);
+                navigate('events/' + event._id)
+              }}>
+                <span className="text-sm">{EVENT_ICONS[event.title] ?? "🎉"}</span>
+                <span className="text-sm font-medium">{event?.title || "Wedding Celebration"}</span>
+                <span className={`${getColor(event.status)}  text-xs px-2 py-0.5 rounded-full ${selectedEvent === event._id ? "bg-white text-blue-700 border border-blue-300" : "text-white"}`}>{event.status}</span>
               </div>
-              <p className="text-2xl font-bold text-foreground">{stat.value}</p>
-              <p className="text-xs font-medium text-foreground mt-0.5">{stat.label}</p>
-              <p className="text-xs text-muted-foreground mt-0.5">{stat.trend}</p>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
-
-      {/* ── Quick Actions + Activity side by side on large screens ── */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-10">
-
-        {/* Quick Actions — takes 2/3 width */}
-        <div className="lg:col-span-2 space-y-4">
-          <div className="flex items-center justify-between">
-            <h2 className="text-lg font-semibold text-foreground">Quick Actions</h2>
-            <span className="text-xs text-muted-foreground">{dashboardCards.length} sections</span>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            {dashboardCards.map((card, index) => (
-              <Link key={index} to={card.href}>
-                <Card className="h-full hover:shadow-md hover:border-blue-200 transition-all cursor-pointer group">
-                  <CardContent className="p-4 flex items-center gap-4">
-                    <div className={`w-11 h-11 ${card.light} ${card.text} rounded-xl flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform`}>
-                      <card.icon className="h-5 w-5" />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <h3 className="font-semibold text-foreground text-sm leading-tight">{card.title}</h3>
-                      <p className="text-xs text-muted-foreground mt-0.5 truncate">{card.description}</p>
-                    </div>
-                    <ArrowRight className="h-4 w-4 text-muted-foreground/40 -translate-x-1 opacity-0 group-hover:opacity-100 group-hover:translate-x-0 transition-all shrink-0" />
-                  </CardContent>
-                </Card>
-              </Link>
             ))}
           </div>
         </div>
-
-        {/* Recent Activity — takes 1/3 width */}
-        <div className="space-y-4">
-          <div className="flex items-center justify-between">
-            <h2 className="text-lg font-semibold text-foreground">Recent Activity</h2>
-            <span className="text-xs text-blue-600 font-medium cursor-pointer hover:underline">View all</span>
-          </div>
-          <Card className="h-fit">
-            <CardContent className="p-4 space-y-1">
-              {activities.map((activity, index) => (
-                <div key={index} className="flex items-start gap-3 py-2.5 border-b border-border last:border-0">
-                  <div className={`w-7 h-7 rounded-lg ${activity.color} flex items-center justify-center shrink-0 mt-0.5`}>
-                    <activity.icon className="h-3.5 w-3.5" />
+        {/* ── Stats Grid ── */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-5">
+          {stats.map((stat, i) => (
+            <Card key={i} className={`border ${stat.border} hover:shadow-md transition-shadow`}>
+              <CardContent className="p-4">
+                <div className="flex items-start justify-between mb-3">
+                  <div className={`w-9 h-9 ${stat.bg} ${stat.color} rounded-lg flex items-center justify-center`}>
+                    <stat.icon className="h-4 w-4" />
                   </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm text-foreground leading-snug">{activity.action}</p>
-                    <p className="text-xs text-muted-foreground mt-0.5">{activity.time}</p>
-                  </div>
+                  <TrendingUp className="h-3.5 w-3.5 text-muted-foreground/50" />
                 </div>
-              ))}
-            </CardContent>
-          </Card>
-
-          {/* Mini upcoming reminder */}
-          <Card className="border-blue-100 bg-blue-50/50">
-            <CardContent className="p-4">
-              <div className="flex items-center gap-2 mb-2">
-                <Calendar className="h-4 w-4 text-blue-600" />
-                <span className="text-sm font-medium text-foreground">Next Up</span>
-              </div>
-              <p className="text-sm text-foreground font-semibold">Venue Site Visit</p>
-              <p className="text-xs text-muted-foreground mt-0.5">Tomorrow, 11:00 AM</p>
-              <div className="mt-3 h-1.5 bg-blue-100 rounded-full overflow-hidden">
-                <div className="h-full w-3/4 bg-blue-500 rounded-full" />
-              </div>
-              <p className="text-xs text-blue-600 mt-1 font-medium">3 of 4 prep tasks done</p>
-            </CardContent>
-          </Card>
+                <p className="text-2xl font-bold text-foreground">{stat.value}</p>
+                <p className="text-xs font-medium text-foreground mt-0.5">{stat.label}</p>
+                <p className="text-xs text-muted-foreground mt-0.5">{stat.trend}</p>
+              </CardContent>
+            </Card>
+          ))}
         </div>
-      </div>
+
+        {/* ── Quick Actions + Activity side by side on large screens ── */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-10">
+
+          {/* Quick Actions — takes 2/3 width */}
+          <div className="lg:col-span-2 space-y-4">
+            <div className="flex items-center justify-between">
+              <h2 className="text-lg font-semibold text-foreground">Quick Actions</h2>
+              <span className="text-xs text-muted-foreground">{dashboardCards.length} sections</span>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {dashboardCards.map((card, index) => (
+                <Link key={index} to={card.href}>
+                  <Card className="h-full hover:shadow-md hover:border-blue-200 transition-all cursor-pointer group">
+                    <CardContent className="p-4 flex items-center gap-4">
+                      <div className={`w-11 h-11 ${card.light} ${card.text} rounded-xl flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform`}>
+                        <card.icon className="h-5 w-5" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <h3 className="font-semibold text-foreground text-sm leading-tight">{card.title}</h3>
+                        <p className="text-xs text-muted-foreground mt-0.5 truncate">{card.description}</p>
+                      </div>
+                      <ArrowRight className="h-4 w-4 text-muted-foreground/40 -translate-x-1 opacity-0 group-hover:opacity-100 group-hover:translate-x-0 transition-all shrink-0" />
+                    </CardContent>
+                  </Card>
+                </Link>
+              ))}
+            </div>
+          </div>
+
+          {/* Recent Activity — takes 1/3 width */}
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <h2 className="text-lg font-semibold text-foreground">Recent Activity</h2>
+              <span className="text-xs text-blue-600 font-medium cursor-pointer hover:underline">View all</span>
+            </div>
+            <Card className="h-fit">
+              <CardContent className="p-4 space-y-1">
+                {activities.map((activity, index) => (
+                  <div key={index} className="flex items-start gap-3 py-2.5 border-b border-border last:border-0">
+                    <div className={`w-7 h-7 rounded-lg ${activity.color} flex items-center justify-center shrink-0 mt-0.5`}>
+                      <activity.icon className="h-3.5 w-3.5" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm text-foreground leading-snug">{activity.action}</p>
+                      <p className="text-xs text-muted-foreground mt-0.5">{activity.time}</p>
+                    </div>
+                  </div>
+                ))}
+              </CardContent>
+            </Card>
+
+            {/* Mini upcoming reminder */}
+            <Card className="border-blue-100 bg-blue-50/50">
+              <CardContent className="p-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <Calendar className="h-4 w-4 text-blue-600" />
+                  <span className="text-sm font-medium text-foreground">Next Up</span>
+                </div>
+                <p className="text-sm text-foreground font-semibold">Venue Site Visit</p>
+                <p className="text-xs text-muted-foreground mt-0.5">Tomorrow, 11:00 AM</p>
+                <div className="mt-3 h-1.5 bg-blue-100 rounded-full overflow-hidden">
+                  <div className="h-full w-3/4 bg-blue-500 rounded-full" />
+                </div>
+                <p className="text-xs text-blue-600 mt-1 font-medium">3 of 4 prep tasks done</p>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
       </div>)}
     </div>
   )

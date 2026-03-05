@@ -44,8 +44,8 @@ export default function LoginPage() {
   const handlePasswordLogin = (e) => {
     e.preventDefault()
     dispatch(loginWithPassword({ email, password,navigate }))
-    if (localStorage.getItem("token")) {
-      navigate("/dashboard")
+    if (localStorage.getItem("token").length > 0) {
+      //navigate("/dashboard")
     }
   }
 
@@ -61,7 +61,7 @@ export default function LoginPage() {
 
   useEffect(() => {
     if (localStorage.getItem("token")?.length > 0) {
-     navigate("/dashboard")
+     //navigate("/dashboard")
     }
   }, [])
 

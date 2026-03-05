@@ -21,6 +21,7 @@ import Guests from "../../pages/dashboard/guests/Guests";
 import Venue from "../../pages/dashboard/venue/Venue";
 import { VenueDetail } from "../../pages/dashboard/venue/VenueDetail";
 import SetUserProfile from "@/pages/SetUserProfile";
+import EventDetailPage from "../Event/EventDetail";
 
 export default function AppRoutes() {
   return (
@@ -32,6 +33,7 @@ export default function AppRoutes() {
         <Route path="/forgotpassword" element={<ForgotPassword />} />
         <Route path="/register" element={<Register />} />
         <Route path="/events" element={<Events />} />
+        
         <Route path="/select-role" element={<RoleSelectionPage />} />
         <Route path="/set-venue-profile" element={<SetVenueProfile />} />
         <Route path="/set-vendor-profile" element={<SetVendorProfile />} />
@@ -44,6 +46,7 @@ export default function AppRoutes() {
           <Route path="events" element={<DashboardEvents />} />
           <Route path="guests" element={<Guests />} />
           <Route path="invitations" element={<Invitations />} />
+          <Route path="events/:id" element={<EventDetailPage />} />
           <Route path="vendors" element={<Vendors />} />
           <Route path="reviews" element={<Reviews />} />
           <Route path="post-wedding" element={<PostWedding />} />
