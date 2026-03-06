@@ -2,7 +2,7 @@
 import { Heart, Calendar, MapPin, Users, Store, ImageIcon, CheckCircle } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
-import { Navbar } from "@/components/navbar"
+import { Navbar } from "@/components/Navbar.jsx"
 import { Link } from "react-router-dom"
 
 const features = [
