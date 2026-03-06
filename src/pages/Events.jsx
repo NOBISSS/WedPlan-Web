@@ -2,7 +2,7 @@
 import { Heart, Calendar, ArrowRight, Sparkles } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Navbar } from "@/components/navbar"
+import { Navbar } from "@/components/Navbar.jsx"
 import { Link } from "react-router-dom"
 
 const eventTypes = [
