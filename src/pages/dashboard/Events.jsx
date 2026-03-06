@@ -107,9 +107,9 @@ export default function EventsPage() {
               <CardDescription>You have selected {selectedEvents?.length || 0} event(s)</CardDescription>
             </CardHeader>
             <CardContent>
-              {selectedEvents && selectedEvents.length > 0 ? (
+              {selectedEvents.length > 0 ? (
                 <div className="flex flex-wrap gap-2 mb-6">
-                  {selectedEvents && selectedEvents.map((eventId) => {
+                  {selectedEvents.length>0 && selectedEvents.map((eventId) => {
                     const event = categories.find((e) => e._id === eventId)
                     return (
                       <span
@@ -135,7 +135,6 @@ export default function EventsPage() {
               </Button>
             </CardContent>
           </Card>
-
         </div>
       )}
     </div>
