@@ -69,14 +69,13 @@ export default function VenuePage() {
   const [selectedVenue, setSelectedVenue] = useState(null)
   const [numberOfDays, setNumberOfDays] = useState(1)
   const [isFilterOpen, setIsFilterOpen] = useState(false);
-  const { venues, loading } = useSelector((state) => state.venue || []);
+  const { venues = [], loading = false } = useSelector((state) => state.venue || {});
   const selectedVenueData = useSelector((state) => state.venue.currentSelectedVenue || null);
-
   const totalCost = selectedVenueData ? selectedVenueData.price * numberOfDays : 0
   const navigate = useNavigate();
 
   useEffect(() => {
-    if(venues.length === 0)
+    if (venues.length === 0)
       dispatch(fetchVenues());
   }, [])
 
@@ -145,7 +144,7 @@ export default function VenuePage() {
                   </div>
                   <div className="flex items-center gap-2">
                     <IndianRupee className="h-4 w-4" />
-                    <span className="font-semibold text-foreground">{venue.price.toLocaleString()} / day</span>
+                    <span className="font-semibold text-foreground">{venue?.price?.toLocaleString() ?? "N/A"} / day</span>
                   </div>
                 </div>
                 <Button className="w-full mt-4" variant={isSelected ? "default" : "outline"}>
@@ -190,7 +189,7 @@ export default function VenuePage() {
             <div className="mt-6 p-4 bg-muted rounded-lg">
               <div className="flex items-center justify-between mb-2">
                 <span className="text-muted-foreground">
-                  Price per day: ₹{selectedVenueData?.price.toLocaleString()}
+                  Price per day: ₹{selectedVenueData?.price?.toLocaleString()}
                 </span>
               </div>
               <div className="flex items-center justify-between text-lg font-semibold">

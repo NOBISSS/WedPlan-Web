@@ -18,8 +18,8 @@ import BookModal from "./BookModal";
 
 export const VenueDetail = () => {
   const [bookVenueModalOpen, setBookVenueModalOpen] = useState(false);
-  const {currentSelectedVenue,loading} = useSelector((state) => state.venue || {});
-  const venue=currentSelectedVenue;
+  const { currentSelectedVenue, loading } = useSelector((state) => state.venue || {});
+  const venue = currentSelectedVenue;
   const categories = useSelector((state) => state.eventCategory.categories) || [];
 
   const details = venue?.details;

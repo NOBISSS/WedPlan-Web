@@ -16,7 +16,7 @@ const EVENT_ICONS = {
 export default function EventsPage() {
 
   const [selectedEvents, setSelectedEvents] = useState([]);
-  const {categories,loading}=useSelector((state) => state.eventCategory);
+  const {categories=[],loading}=useSelector((state) => state.eventCategory);
 
   const toggleEvent = (eventId) => {
     setSelectedEvents((prev) =>
@@ -110,7 +110,7 @@ export default function EventsPage() {
               {selectedEvents.length > 0 ? (
                 <div className="flex flex-wrap gap-2 mb-6">
                   {selectedEvents.length>0 && selectedEvents.map((eventId) => {
-                    const event = categories.find((e) => e._id === eventId)
+                    const event = categories.find((e) => e._id === eventId) || [];
                     return (
                       <span
                         key={eventId}

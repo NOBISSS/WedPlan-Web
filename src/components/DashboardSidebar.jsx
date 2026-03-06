@@ -5,6 +5,7 @@ import { useEffect } from "react"
 import { fetchEvents } from "@/store/thunks/eventThunk"
 import { fetchCategory } from "@/store/thunks/eventCategoryThunk"
 import { useDispatch } from "react-redux"
+import { fetchVenues } from "@/store/thunks/venueThunks"
 const menuItems = [
   { icon: LayoutDashboard, label: "Dashboard", href: "/dashboard" },
   { icon: Calendar, label: "Events", href: "/dashboard/events" },
@@ -22,6 +23,7 @@ export function DashboardSidebar({ isOpen, onClose }) {
   useEffect(()=>{
       dispatch(fetchEvents());
       dispatch(fetchCategory());
+//      dispatch(fetchVenues());
     },[])
   return (
     <>
