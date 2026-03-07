@@ -14,6 +14,31 @@ export const registerWithOTP = createAsyncThunk(
         }
     });
 
+export const setUserProfile=createAsyncThunk(
+    "auth/setUserProfile",
+    async (profileData, { rejectWithValue }) => {
+        try {
+            const token = localStorage.getItem("token");
+            const res = await axios.post(`${BASE_URL}/profile/setuserprofile`, profileData, headers(token));
+            return res.data.data;
+        } catch (error) {
+            return rejectWithValue(error.response.data.message || "Failed to set user profile");
+        }
+});
+
+export const setVendorProfile=createAsyncThunk(
+    "auth/setUserProfile",
+    async (profileData, { rejectWithValue }) => {
+        try {
+            const token = localStorage.getItem("token");
+            const res = await axios.post(`${BASE_URL}/vendor/setprofile`, profileData, headers(token));
+            return res.data.data;
+        } catch (error) {
+            return rejectWithValue(error.response.data.message || "Failed to set user profile");
+        }
+});
+
+
 //REGISTER STEP 2 - VERIFY OTP
 export const vertifyRegisterOTP = createAsyncThunk(
     "auth/vertifyRegisterOTP",

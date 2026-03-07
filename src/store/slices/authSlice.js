@@ -1,9 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { forgotPassword, getMe, loginWithEmailOTP, loginWithPassword, logoutUser, registerWithOTP, resetPassword, resendOTP, verifyForgotPasswordOTP, verifyLoginOTP, vertifyRegisterOTP } from "../thunks/authThunks";
+import { forgotPassword, getMe, loginWithEmailOTP, loginWithPassword, logoutUser, registerWithOTP, resetPassword, resendOTP, verifyForgotPasswordOTP, verifyLoginOTP, vertifyRegisterOTP,setUserProfile } from "../thunks/authThunks";
 
 
 const initialState = {
     user: null,
+    profile:null,
     token: localStorage.getItem("token") || null,
     isAuthenticated: false,
 
@@ -220,6 +221,26 @@ const authSlice = createSlice({
                 state.otpVerified = false;
                 state.pendingEmail = null;
             })
+
+        //Set User Profile
+        builder
+            .addCase(setUserProfile.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+                state.user=null;
+                state.profile=null;
+            })
+            .addCase(setUserProfile.fulfilled, (state, action) => {
+                state.loading = false;
+                state.user = action.payload.user; // Update user profile in state
+                state.profile=action.payload.profile;
+            })
+            .addCase(setUserProfile.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload || "Failed to update user profile";
+                state.user=null;
+                state.profile=null;
+            });
     },
 });
 
