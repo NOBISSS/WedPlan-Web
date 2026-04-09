@@ -2,6 +2,17 @@ import { BASE_URL, headers } from "@/constants/constant";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
+export const setVenueProfile=createAsyncThunk(
+    "venue/setVenueProfile",
+    async (profileData, { rejectWithValue }) => {
+        try {            const token = localStorage.getItem("token");
+            const res = await axios.post(`${BASE_URL}/venue/setprofile`, profileData, headers(token));
+            return res.data.data;
+        }catch (error) {
+            return rejectWithValue(error?.response?.data?.message || "Failed to set venue profile");
+        }
+    });
+
 export const fetchVenues = createAsyncThunk(
     "venue/fetchVenues",
     async (_, { rejectWithValue }) => {
